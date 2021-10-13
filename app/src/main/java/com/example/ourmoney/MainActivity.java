@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvdata;
     RadioButton rbkeluar, rbmasuk;
     ArrayAdapter adaptercategorykeluar,adaptercategorymasuk,adapterwallet;
+    BottomNavigationView navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         tvdata = findViewById(R.id.tvdata);
         rbkeluar = findViewById(R.id.rkeluar);
         rbmasuk = findViewById(R.id.rdapat);
+        navbar = findViewById(R.id.bottomNavigationView);
 
         spinnerwallet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -79,13 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
         spinnerwallet.setAdapter(adapterwallet);
 
-        //Intent i = new Intent(MainActivity.this, );
+        rbmasuk.performClick();
 
     }
 
     //BottomNavigationView.OnNavigationItemSelectedListener(){
 
     //}
+
+
 
     public void addtransaksi(View view) {
         MoneyTransaction m;
@@ -96,14 +100,16 @@ public class MainActivity extends AppCompatActivity {
         }
         daftarwallet.get(spinnerwallet.getSelectedItemPosition()).addTransaction(m);
         refreshdata();
+        etduit.getText().clear();
     }
 
     public void refreshdata(){
         tvdata.setText("");
         for (int i = 0; i < daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().size(); i++) {
-            int tempint = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionAmount();
-            String tempst = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionType();
-            tvdata.setText(tvdata.getText().toString()+""+tempint+"-"+tempst+"\n");
+            int trAmount = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionAmount();
+            String trType = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionType();
+            String trCategory = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionCategory().getCategoryName();
+            tvdata.setText(tvdata.getText().toString()+""+trAmount+" - "+trType+" - "+ trCategory+"\n");
         }
 
 
