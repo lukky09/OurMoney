@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Button baddtransaction;
     Spinner spinnertag, spinnerwallet;
     EditText etduit;
-    TextView tvdata;
+    TextView tvdata,tvwalletamount;
     RadioButton rbkeluar, rbmasuk;
     ArrayAdapter adaptercategorykeluar,adaptercategorymasuk,adapterwallet;
     BottomNavigationView navbar;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         spinnertag = findViewById(R.id.spinnertag);
         spinnerwallet = findViewById(R.id.spinnerwallet);
         tvdata = findViewById(R.id.tvdata);
+        tvwalletamount = findViewById(R.id.tvwalletamount);
         rbkeluar = findViewById(R.id.rkeluar);
         rbmasuk = findViewById(R.id.rdapat);
         navbar = findViewById(R.id.bottomNavigationView);
@@ -92,15 +93,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void addtransaksi(View view) {
-        MoneyTransaction m;
-        if(rbkeluar.isChecked()){
-            m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbkeluar.getText().toString(), daftarkategorikeluar.get(spinnertag.getSelectedItemPosition()));
-        }else{
-            m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbmasuk.getText().toString(), daftarkategorimasuk.get(spinnertag.getSelectedItemPosition()));
+        if(etduit.getText().length()>0){
+            MoneyTransaction m;
+            if(rbkeluar.isChecked()){
+                m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbkeluar.getText().toString(), daftarkategorikeluar.get(spinnertag.getSelectedItemPosition()));
+            }else{
+                m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbmasuk.getText().toString(), daftarkategorimasuk.get(spinnertag.getSelectedItemPosition()));
+            }
+            daftarwallet.get(spinnerwallet.getSelectedItemPosition()).addTransaction(m);
+            refreshdata();
+            etduit.getText().clear();
         }
-        daftarwallet.get(spinnerwallet.getSelectedItemPosition()).addTransaction(m);
-        refreshdata();
-        etduit.getText().clear();
     }
 
     public void refreshdata(){
@@ -111,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
             String trCategory = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionCategory().getCategoryName();
             tvdata.setText(tvdata.getText().toString()+""+trAmount+" - "+trType+" - "+ trCategory+"\n");
         }
+
+        tvwalletamount.setText(daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletAmount()+"");
 
 
     }

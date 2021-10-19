@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tambah transaksi"
+            android:textColor="@color/black"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="44dp"
             android:text="Rp. "
+            android:textColor="@color/black"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -86,13 +88,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Tag"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spinnertag"
                 android:layout_width="244dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -114,13 +117,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Wallet"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spinnerwallet"
                 android:layout_width="244dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <Button
@@ -172,11 +176,24 @@
             android:id="@+id/tvdata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btambahtransaksi"
-            app:layout_constraintVertical_bias="0.055" />
+            app:layout_constraintTop_toBottomOf="@+id/tvwalletamount"
+            app:layout_constraintVertical_bias="0.047" />
+
+        <TextView
+            android:id="@+id/tvwalletamount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="TextView"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btambahtransaksi" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

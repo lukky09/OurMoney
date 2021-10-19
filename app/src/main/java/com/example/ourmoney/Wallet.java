@@ -16,7 +16,11 @@ public class Wallet {
         walletTransactions.add(newtr);
         walletAmount = 0;
         for (int i = 0; i < walletTransactions.size(); i++) {
-            walletAmount += walletTransactions.get(i).getTransactionAmount();
+            if(walletTransactions.get(i).getTransactionType().equals("Pengeluaran")){
+                walletAmount -= walletTransactions.get(i).getTransactionAmount();
+            }else{
+                walletAmount += walletTransactions.get(i).getTransactionAmount();
+            }
         }
     }
 
