@@ -2,6 +2,7 @@ package com.example.ourmoney;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,13 +26,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Wallet> daftarwallet;
-    ArrayList<Category> daftarkategorikeluar, daftarkategorimasuk;
-    Button baddtransaction;
+    public static ArrayList<Wallet> daftarwallet;
+    public static ArrayList<Category> daftarkategorikeluar, daftarkategorimasuk;
     Spinner spinnertag, spinnerwallet;
-    EditText etduit;
-    TextView tvdata,tvwalletamount;
-    RadioButton rbkeluar, rbmasuk;
     ArrayAdapter adaptercategorykeluar,adaptercategorymasuk,adapterwallet;
     BottomNavigationView navbar;
 
@@ -40,34 +37,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        daftarwallet = new ArrayList<Wallet>();
-        daftarkategorikeluar = new ArrayList<Category>();
-        daftarkategorimasuk = new ArrayList<Category>();
-        etduit = findViewById(R.id.tvtransaksi);
-        baddtransaction = findViewById(R.id.btambahtransaksi);
-        spinnertag = findViewById(R.id.spinnertag);
-        spinnerwallet = findViewById(R.id.spinnerwallet);
-        tvdata = findViewById(R.id.tvdata);
-        tvwalletamount = findViewById(R.id.tvwalletamount);
-        rbkeluar = findViewById(R.id.rkeluar);
-        rbmasuk = findViewById(R.id.rdapat);
         navbar = findViewById(R.id.bottomNavigationView);
-
-        spinnerwallet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                refreshdata();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment frag;
                 switch (item.getItemId()) {
                     case R.id.homeFragment:
                         Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
@@ -76,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Management", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.addFragment:
-                        Toast.makeText(MainActivity.this, "Addo", Toast.LENGTH_SHORT).show();
+                        frag = AddTransactionFragment.newInstance(daftarwallet,daftarkategorikeluar,daftarkategorimasuk);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                     case R.id.reportFragment:
                         Toast.makeText(MainActivity.this, "Reporto", Toast.LENGTH_SHORT).show();
@@ -89,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        daftarwallet = new ArrayList<>();
+        daftarkategorikeluar = new ArrayList<>();
+        daftarkategorimasuk = new ArrayList<>();
+
         daftarwallet.add(new Wallet("Wallet1", 0, new ArrayList<MoneyTransaction>()));
         daftarwallet.add(new Wallet("Wallet2", 0, new ArrayList<MoneyTransaction>()));
 
@@ -98,19 +78,6 @@ public class MainActivity extends AppCompatActivity {
         daftarkategorimasuk.add(new Category("Gaji", "Pemasukan"));
         daftarkategorimasuk.add(new Category("Bonus", "Pemasukan"));
 
-        adaptercategorykeluar = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, daftarkategorikeluar);
-        adaptercategorykeluar.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
-        adaptercategorymasuk = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, daftarkategorimasuk);
-        adaptercategorymasuk.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
-        adapterwallet = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, daftarwallet);
-        adapterwallet.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
-        spinnerwallet.setAdapter(adapterwallet);
-
-        rbmasuk.performClick();
-
     }
 
     //BottomNavigationView.OnNavigationItemSelectedListener(){
@@ -119,39 +86,4 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void addtransaksi(View view) {
-        if(etduit.getText().length()>0){
-            MoneyTransaction m;
-            if(rbkeluar.isChecked()){
-                m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbkeluar.getText().toString(), daftarkategorikeluar.get(spinnertag.getSelectedItemPosition()));
-            }else{
-                m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbmasuk.getText().toString(), daftarkategorimasuk.get(spinnertag.getSelectedItemPosition()));
-            }
-            daftarwallet.get(spinnerwallet.getSelectedItemPosition()).addTransaction(m);
-            refreshdata();
-            etduit.getText().clear();
-        }
-    }
-
-    public void refreshdata(){
-        tvdata.setText("");
-        for (int i = 0; i < daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().size(); i++) {
-            int trAmount = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionAmount();
-            String trType = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionType();
-            String trCategory = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionCategory().getCategoryName();
-            tvdata.setText(tvdata.getText().toString()+""+trAmount+" - "+trType+" - "+ trCategory+"\n");
-        }
-
-        tvwalletamount.setText(daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletAmount()+"");
-
-
-    }
-
-    public void klikradio(View view) {
-        if(view.getId() == R.id.rkeluar){
-            spinnertag.setAdapter(adaptercategorykeluar);
-        }else{
-            spinnertag.setAdapter(adaptercategorymasuk);
-        }
-    }
 }
