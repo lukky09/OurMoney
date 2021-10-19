@@ -2,15 +2,32 @@
     <!-- Base application theme. -->
     <style name="Theme.OurMoney" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/OurRedLight</item>
-        <item name="colorPrimaryVariant">@color/OurRedLight</item>
+        <item name="colorPrimary">@color/OurRed</item>
+        <item name="colorPrimaryVariant">@color/OurRedDark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/OurRedLight</item>
-        <item name="colorSecondaryVariant">@color/OurRedLight</item>
+        <item name="colorSecondary">@color/OurRedDark</item>
+        <item name="colorSecondaryVariant">@color/OurRed</item>
         <item name="colorOnSecondary">@color/black</item>
+
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+
+
+
     </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/OurRedDesaturated</item>
+    </style>
+
 </resources>

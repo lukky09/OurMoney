@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 Fragment frag;
                 switch (item.getItemId()) {
                     case R.id.homeFragment:
-                        Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                        frag = HomeFragment.newInstance(daftarwallet);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                     case R.id.manageFragment:
                         Toast.makeText(MainActivity.this, "Management", Toast.LENGTH_SHORT).show();
@@ -77,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
         daftarkategorimasuk.add(new Category("Gaji", "Pemasukan"));
         daftarkategorimasuk.add(new Category("Bonus", "Pemasukan"));
+
+        Fragment welcomeFragment;
+        welcomeFragment = HomeFragment.newInstance(daftarwallet);
+        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
 
     }
 
