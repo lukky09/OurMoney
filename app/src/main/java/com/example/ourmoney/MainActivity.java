@@ -1,10 +1,12 @@
 package com.example.ourmoney;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Trace;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -58,6 +61,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.homeFragment:
+                        Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.manageFragment:
+                        Toast.makeText(MainActivity.this, "Management", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.addFragment:
+                        Toast.makeText(MainActivity.this, "Addo", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.reportFragment:
+                        Toast.makeText(MainActivity.this, "Reporto", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.userFragment:
+                        Toast.makeText(MainActivity.this, "Profileu", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
             }
         });
 
