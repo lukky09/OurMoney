@@ -12,7 +12,7 @@
     <item
         android:id="@+id/addFragment"
         android:icon="@drawable/ic_add_circle"
-        android:title="Add" />
+        android:title="Transaction" />
     <item
         android:id="@+id/reportFragment"
         android:icon="@drawable/ic_bar_chart"
@@ -20,5 +20,5 @@
     <item
         android:id="@+id/userFragment"
         android:icon="@drawable/ic_person"
-        android:title="User" />
+        android:title="Profil" />
 </menu>

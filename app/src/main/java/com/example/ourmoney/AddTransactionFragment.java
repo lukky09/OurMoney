@@ -146,7 +146,8 @@ public class AddTransactionFragment extends Fragment {
             int trAmount = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionAmount();
             String trType = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionType();
             String trCategory = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionCategory().getCategoryName();
-            tvdata.setText(tvdata.getText().toString()+""+trAmount+" - "+trType+" - "+ trCategory+"\n");
+            String trTime = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getFormattedTransactionDate();
+            tvdata.setText(tvdata.getText().toString()+""+trAmount+" - "+trType+" - "+ trCategory+" on "+trTime+"\n");
         }
         String displayBalanceWallet = String.format("%,8d%n", daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletAmount());
         tvwalletamount.setText("Rp "+displayBalanceWallet);

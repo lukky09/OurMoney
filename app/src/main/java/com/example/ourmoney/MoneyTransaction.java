@@ -1,14 +1,22 @@
 package com.example.ourmoney;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+
 public class MoneyTransaction {
     private int transactionAmount;
     private String transactionType;
     private Category transactionCategory;
+    private Date transactionDate;
 
     public MoneyTransaction(int transactionAmount, String transactionType, Category transactionCategory) {
         this.transactionAmount = transactionAmount;
         this.transactionType = transactionType;
         this.transactionCategory = transactionCategory;
+        this.transactionDate = new Date();
     }
 
     public int getTransactionAmount() {
@@ -34,4 +42,16 @@ public class MoneyTransaction {
     public void setTransactionCategory(Category transactionCategory) {
         this.transactionCategory = transactionCategory;
     }
+
+    public Date getTransactionDate() { return transactionDate; }
+    public String getFormattedTransactionDate() {
+        DateFormat df = new SimpleDateFormat("E, dd MMM yyyy");
+        return df.format(this.transactionDate);
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+
 }
