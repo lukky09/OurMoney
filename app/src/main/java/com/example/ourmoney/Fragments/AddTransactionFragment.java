@@ -1,4 +1,4 @@
-package com.example.ourmoney;
+package com.example.ourmoney.Fragments;
 
 import android.os.Bundle;
 
@@ -16,7 +16,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.R;
+import com.example.ourmoney.Models.Wallet;
 
 import java.util.ArrayList;
 
@@ -80,7 +84,7 @@ public class AddTransactionFragment extends Fragment {
         baddtransaction = view.findViewById(R.id.btambahtransaksi);
         spinnertag = view.findViewById(R.id.spinnertag);
         spinnerwallet = view.findViewById(R.id.spinnerwallet);
-        tvdata = view.findViewById(R.id.tvdata);
+//        tvdata = view.findViewById(R.id.tvdata);
         tvwalletamount = view.findViewById(R.id.tvwalletamount);
         rbkeluar = view.findViewById(R.id.rkeluar);
         rbmasuk = view.findViewById(R.id.rdapat);
@@ -141,14 +145,14 @@ public class AddTransactionFragment extends Fragment {
     }
 
     public void refreshdata(){
-        tvdata.setText("");
-        for (int i = 0; i < daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().size(); i++) {
-            int trAmount = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionAmount();
-            String trType = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionType();
-            String trCategory = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionCategory().getCategoryName();
-            String trTime = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getFormattedTransactionDate();
-            tvdata.setText(tvdata.getText().toString()+""+trAmount+" - "+trType+" - "+ trCategory+" on "+trTime+"\n");
-        }
+//        tvdata.setText("");
+//        for (int i = 0; i < daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().size(); i++) {
+//            int trAmount = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionAmount();
+//            String trType = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionType();
+//            String trCategory = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getTransactionCategory().getCategoryName();
+//            String trTime = daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletTransactions().get(i).getFormattedTransactionDate();
+//            tvdata.setText(tvdata.getText().toString()+""+trAmount+" - "+trType+" - "+ trCategory+" on "+trTime+"\n");
+//        }
         String displayBalanceWallet = String.format("%,8d%n", daftarwallet.get(spinnerwallet.getSelectedItemPosition()).getWalletAmount());
         tvwalletamount.setText("Rp "+displayBalanceWallet);
     }

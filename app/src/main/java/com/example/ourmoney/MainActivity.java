@@ -4,23 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Trace;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ourmoney.Fragments.AddTransactionFragment;
+import com.example.ourmoney.Fragments.HomeFragment;
+import com.example.ourmoney.Fragments.ProfileFragment;
+import com.example.ourmoney.Fragments.SavingCashFragment;
+import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.Wallet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -49,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                     case R.id.manageFragment:
-                        Toast.makeText(MainActivity.this, "Management", Toast.LENGTH_SHORT).show();
+                        frag = SavingCashFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                     case R.id.addFragment:
                         frag = AddTransactionFragment.newInstance(daftarwallet,daftarkategorikeluar,daftarkategorimasuk);
@@ -59,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Reporto", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.userFragment:
-                        Toast.makeText(MainActivity.this, "Profileu", Toast.LENGTH_SHORT).show();
+                        frag = ProfileFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                 }
                 return true;

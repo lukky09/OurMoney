@@ -1,9 +1,7 @@
-package com.example.ourmoney;
+package com.example.ourmoney.Models;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class MoneyTransaction {

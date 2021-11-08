@@ -8,15 +8,15 @@
     <item
         android:id="@+id/manageFragment"
         android:icon="@drawable/ic_baseline_account_balance_24"
-        android:title="Manage" />
+        android:title="Menabung" />
     <item
         android:id="@+id/addFragment"
         android:icon="@drawable/ic_add_circle"
-        android:title="Transaction" />
+        android:title="Transaksi" />
     <item
         android:id="@+id/reportFragment"
         android:icon="@drawable/ic_bar_chart"
-        android:title="Report" />
+        android:title="Laporan" />
     <item
         android:id="@+id/userFragment"
         android:icon="@drawable/ic_person"

@@ -1,4 +1,4 @@
-package com.example.ourmoney;
+package com.example.ourmoney.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

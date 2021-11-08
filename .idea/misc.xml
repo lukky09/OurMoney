@@ -6,6 +6,8 @@
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_main.xml" value="0.48946840521564694" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_add_transaction.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_home_transaction.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_saving_cash.xml" value="0.24547101449275363" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/gamel/Desktop/OurMoney/OurMoney/app/src/main/res/drawable/ic_add_circle.xml" value="0.3828125" />
         <entry key="..\:/Users/gamel/Desktop/OurMoney/OurMoney/app/src/main/res/drawable/ic_bar_chart.xml" value="0.3828125" />
@@ -29,5 +31,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.24547101449275363" />
+      </ProjectState>
+    </option>
   </component>
 </project>
