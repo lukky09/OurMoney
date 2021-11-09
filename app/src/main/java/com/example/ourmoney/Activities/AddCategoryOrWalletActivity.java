@@ -44,6 +44,7 @@ public class AddCategoryOrWalletActivity extends AppCompatActivity {
         if (iscat) {
             rin = findViewById(R.id.rbinwalcat);
             rout = findViewById(R.id.rboutwalcat);
+            etnama.setHint("Nama Kategori");
             rin.setChecked(true);
             nama.setText("Nama Kategori");
             ll.removeViewAt(3);
