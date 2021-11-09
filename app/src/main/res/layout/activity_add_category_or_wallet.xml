@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lladd"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".Activities.AddCategoryOrWalletActivity">
+
+    <TextView
+        android:id="@+id/tvnamacatwal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insert Wallet"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etnamacatwal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="Nama Wallet"
+        android:inputType="textPersonName"
+        android:textSize="20sp" />
+
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbinwalcat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pemasukan" />
+
+        <RadioButton
+            android:id="@+id/rboutwalcat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pengeluaran" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/etjumwallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="Jumlah isi wallet"
+        android:inputType="number"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btncatwal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add wallet"
+        android:onClick="additem"/>
+</LinearLayout>

@@ -1,10 +1,13 @@
 package com.example.ourmoney.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MoneyTransaction {
+public class MoneyTransaction implements Parcelable {
     private int transactionAmount;
     private String transactionType;
     private Category transactionCategory;
@@ -16,6 +19,24 @@ public class MoneyTransaction {
         this.transactionCategory = transactionCategory;
         this.transactionDate = new Date();
     }
+
+    protected MoneyTransaction(Parcel in) {
+        transactionAmount = in.readInt();
+        transactionType = in.readString();
+        transactionCategory = in.readParcelable(Category.class.getClassLoader());
+    }
+
+    public static final Creator<MoneyTransaction> CREATOR = new Creator<MoneyTransaction>() {
+        @Override
+        public MoneyTransaction createFromParcel(Parcel in) {
+            return new MoneyTransaction(in);
+        }
+
+        @Override
+        public MoneyTransaction[] newArray(int size) {
+            return new MoneyTransaction[size];
+        }
+    };
 
     public int getTransactionAmount() {
         return transactionAmount;
@@ -52,4 +73,15 @@ public class MoneyTransaction {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(transactionAmount);
+        parcel.writeString(transactionType);
+        parcel.writeParcelable(transactionCategory, i);
+    }
 }

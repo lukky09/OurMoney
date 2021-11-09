@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.OurMoney" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.OurMoney" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/OurRed</item>
         <item name="colorPrimaryVariant">@color/OurRedDark</item>
@@ -29,5 +29,11 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/OurRedDesaturated</item>
     </style>
+    <style name="Theme.OurMoney.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.OurMoney.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.OurMoney.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -1,8 +1,10 @@
-package com.example.ourmoney;
+package com.example.ourmoney.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.ourmoney.R;
 
 public class ReportActivity extends AppCompatActivity {
 
