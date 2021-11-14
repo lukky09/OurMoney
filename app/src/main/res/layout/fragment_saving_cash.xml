@@ -11,6 +11,7 @@
         android:id="@+id/tvsaving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
         android:text="Menabung"
         android:textColor="?attr/colorSecondary"
         android:textSize="34sp"
@@ -22,42 +23,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.049" />
 
-    <Button
-        android:id="@+id/btnAddSaving"
-        android:layout_width="379dp"
-        android:layout_height="65dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:text="Buat Target Baru"
-        android:textSize="24sp"
-        app:cornerRadius="32.5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvsaving"
-        app:layout_constraintVertical_bias="0.003" />
-
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="16dp"
         android:layout_marginRight="10dp"
-        android:gravity="center_vertical"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddSaving"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/tvsaving"
+        app:layout_constraintVertical_bias="0.063">
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal|center_vertical"
             android:text="Tabungan Saat Ini"
             android:textColor="?attr/colorSecondary"
@@ -68,6 +53,7 @@
             android:id="@+id/tvtarget"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal|center_vertical"
             android:text="Target: Rp"
             android:textColor="?attr/colorSecondary"
@@ -85,6 +71,7 @@
                 android:id="@+id/tvprogress"
                 android:layout_width="175dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
                 android:text="Perkembangan"
                 android:textColor="?attr/colorSecondary"
                 android:textSize="20sp"
@@ -111,6 +98,7 @@
                 android:id="@+id/tvduedate"
                 android:layout_width="175dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
                 android:text="Berlaku hingga"
                 android:textColor="?attr/colorSecondary"
                 android:textSize="20sp"
@@ -126,5 +114,18 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddSaving"
+        android:layout_width="379dp"
+        android:layout_height="65dp"
+        android:text="Buat Target Baru"
+        android:textSize="24sp"
+        app:cornerRadius="32.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:layout_constraintVertical_bias="0.584" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
