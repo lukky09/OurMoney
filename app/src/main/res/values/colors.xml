@@ -12,4 +12,7 @@
     <color name="OurRedDesaturated">#2E292B</color>
     <color name="OurRedDark">#6C212A</color>
     <color name="OurRedCharmingBackground">#FF200A05</color>
+    <color name="crimson_red">#FFFF0000</color>
+    <color name="lime_green">#32cd32</color>
+    <color name="silver">#c0c0c0</color>
 </resources>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".Activities.AddTransactionActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true">
+
+        <Button
+            android:id="@+id/btnExpense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pengeluaran"
+            android:backgroundTint="@color/crimson_red"/>
+        <Button
+            android:id="@+id/btnIncome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pemasukan"
+            android:backgroundTint="@color/silver"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pengeluaran"
+        app:prefixText="Rp."
+        android:layout_marginVertical="10dp"
+        android:backgroundTint="@color/silver"
+        android:layout_below="@+id/linearLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tbAmount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/outlinedTextField">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_format_list_bulleted_24"/>
+
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/dummy_category"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayout2">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_account_balance_wallet_24"/>
+
+        <Spinner
+            android:id="@+id/spinnerWallet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/dummy_wallet"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Catatan/Keterangan"
+        android:layout_marginVertical="10dp"
+        android:backgroundTint="@color/silver"
+        android:layout_below="@+id/linearLayout3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tbNote"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:lines="4"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnDatePicker"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/outlinedTextField2"
+        android:paddingVertical="10dp"
+        android:text="Pilih Tanggal"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        app:icon="@drawable/ic_baseline_date_range_24" />
+
+    <Button
+        android:id="@+id/btnAddTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/OurRed"
+        android:text="Simpan Transaksi"
+        app:cornerRadius="50dp" />
+
+</RelativeLayout>

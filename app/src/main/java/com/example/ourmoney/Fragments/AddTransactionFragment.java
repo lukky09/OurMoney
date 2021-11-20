@@ -107,11 +107,11 @@ public class AddTransactionFragment extends Fragment {
                 if (etduit.getText().length() > 0) {
                     MoneyTransaction m;
                     if (rbkeluar.isChecked()) {
-                        m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbkeluar.getText().toString(), daftarkategorikeluar.get(spinnertag.getSelectedItemPosition()));
+//                        m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbkeluar.getText().toString(), daftarkategorikeluar.get(spinnertag.getSelectedItemPosition()));
                     } else {
-                        m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbmasuk.getText().toString(), daftarkategorimasuk.get(spinnertag.getSelectedItemPosition()));
+//                        m = new MoneyTransaction(Integer.parseInt(etduit.getText().toString()), rbmasuk.getText().toString(), daftarkategorimasuk.get(spinnertag.getSelectedItemPosition()));
                     }
-                    daftarwallet.get(spinnerwallet.getSelectedItemPosition()).addTransaction(m);
+//                    daftarwallet.get(spinnerwallet.getSelectedItemPosition()).addTransaction(m);
                     refreshdata();
                     etduit.getText().clear();
                 }

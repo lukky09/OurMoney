@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_add_circle" />
+
+    <TextView
+        android:id="@+id/tvCategoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kategori"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_toEndOf="@+id/ivIcon"
+        android:layout_toStartOf="@id/tvTransactionAmount"/>
+
+    <TextView
+        android:id="@+id/tvTransactionNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Catatan"
+        android:textSize="16sp"
+        android:layout_toEndOf="@+id/ivIcon"
+        android:layout_toStartOf="@id/tvTransactionAmount"
+        android:layout_below="@id/tvCategoryName"/>
+
+    <TextView
+        android:id="@+id/tvTransactionAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_vertical"
+        android:text="69,000"
+        android:textSize="20sp"
+        android:textColor="@color/OurRed"/>
+
+</RelativeLayout>

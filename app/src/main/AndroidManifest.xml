@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ourmoney" >
+    package="com.example.ourmoney">
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ourmoney_foreground"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OurMoney" >
+        android:theme="@style/Theme.OurMoney">
+        <activity
+            android:name=".Activities.AddTransactionActivity"
+            android:exported="true" />
         <activity
             android:name=".Activities.AddCategoryOrWalletActivity"
             android:exported="false" />
@@ -20,7 +23,7 @@
             android:exported="true" />
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

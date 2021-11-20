@@ -1,7 +1,12 @@
 package com.example.ourmoney.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -10,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.ourmoney.Activities.AddTransactionActivity;
 import com.example.ourmoney.R;
 import com.example.ourmoney.Models.Wallet;
+import com.example.ourmoney.databinding.FragmentHomeTransactionBinding;
 
 import java.util.ArrayList;
 
@@ -29,8 +37,8 @@ public class HomeFragment extends Fragment {
 //    private static final String ARG_PARAM2 = "param2";
 
     ArrayList<Wallet> daftarwallet;
-    TextView lblBalance;
 
+    FragmentHomeTransactionBinding binding;
 
     // TODO: Rename and change types of parameters
 //    private String mParam1;
@@ -40,15 +48,6 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeTransaction.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(ArrayList<Wallet> w) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -71,19 +70,43 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_transaction, container, false);
+//        return inflater.inflate(R.layout.fragment_home_transaction, container, false);
+        binding = FragmentHomeTransactionBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lblBalance = view.findViewById(R.id.lblBalance);
 
         int totalBalance = 0;
         for (int i = 0; i < daftarwallet.size(); i++) {
             totalBalance+=daftarwallet.get(i).getWalletAmount();
         }
         String displayBalance = String.format("%,8d%n",totalBalance);
-        lblBalance.setText("Rp "+displayBalance);
+        binding.lblBalance.setText("Rp "+displayBalance);
+
+        binding.fabAddTransaction.setOnClickListener(this::onClick);
+    }
+
+    ActivityResultLauncher<Intent> addTransRL = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 100){
+                        Intent data = result.getData();
+                        Toast.makeText(getActivity(), data.getStringExtra("msg"), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
+
+    private void onClick(View view){
+        int viewID = view.getId();
+        if (viewID == R.id.fabAddTransaction){
+            Intent moveData = new Intent(getActivity(), AddTransactionActivity.class);
+            addTransRL.launch(moveData);
+        }
     }
 }

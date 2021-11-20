@@ -10,10 +10,6 @@
         android:icon="@drawable/ic_baseline_account_balance_24"
         android:title="Menabung" />
     <item
-        android:id="@+id/addFragment"
-        android:icon="@drawable/ic_add_circle"
-        android:title="Transaksi" />
-    <item
         android:id="@+id/reportFragment"
         android:icon="@drawable/ic_bar_chart"
         android:title="Laporan" />

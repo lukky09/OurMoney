@@ -33,15 +33,15 @@ public class Wallet implements Parcelable {
     }
 
     public void addTransaction(MoneyTransaction newtr){
-        walletTransactions.add(newtr);
-        walletAmount = 0;
-        for (int i = 0; i < walletTransactions.size(); i++) {
-            if(walletTransactions.get(i).getTransactionType().equals("Pengeluaran")){
-                walletAmount -= walletTransactions.get(i).getTransactionAmount();
-            }else{
-                walletAmount += walletTransactions.get(i).getTransactionAmount();
-            }
-        }
+//        walletTransactions.add(newtr);
+//        walletAmount = 0;
+//        for (int i = 0; i < walletTransactions.size(); i++) {
+//            if(walletTransactions.get(i).getTransactionType().equals("Pengeluaran")){
+//                walletAmount -= walletTransactions.get(i).getTransactionAmount();
+//            }else{
+//                walletAmount += walletTransactions.get(i).getTransactionAmount();
+//            }
+//        }
     }
 
     public String getWalletName() {

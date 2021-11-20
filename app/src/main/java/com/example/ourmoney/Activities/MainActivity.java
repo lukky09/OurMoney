@@ -49,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
                         frag = SavingCashFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
-                    case R.id.addFragment:
-                        frag = AddTransactionFragment.newInstance(daftarwallet,daftarkategorikeluar,daftarkategorimasuk);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
-                        break;
                     case R.id.reportFragment:
                         Toast.makeText(MainActivity.this, "Reporto", Toast.LENGTH_SHORT).show();
                         break;

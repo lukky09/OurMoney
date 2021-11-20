@@ -3,27 +3,38 @@ package com.example.ourmoney.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Entity(tableName = "transaction")
 public class MoneyTransaction implements Parcelable {
-    private int transactionAmount;
-    private String transactionType;
-    private Category transactionCategory;
-    private Date transactionDate;
+    @PrimaryKey(autoGenerate = true)
+    private int transaction_id;
+    private int wallet_id;
+    private int category_id;
+    private int transaction_amount;
+    private String transaction_note;
+    private Date transaction_date;
 
-    public MoneyTransaction(int transactionAmount, String transactionType, Category transactionCategory) {
-        this.transactionAmount = transactionAmount;
-        this.transactionType = transactionType;
-        this.transactionCategory = transactionCategory;
-        this.transactionDate = new Date();
+    public MoneyTransaction(int wallet_id, int category_id, int transaction_amount, String transaction_note, Date transaction_date) {
+        this.wallet_id = wallet_id;
+        this.category_id = category_id;
+        this.transaction_amount = transaction_amount;
+        this.transaction_note = transaction_note;
+        this.transaction_date = transaction_date;
     }
 
     protected MoneyTransaction(Parcel in) {
-        transactionAmount = in.readInt();
-        transactionType = in.readString();
-        transactionCategory = in.readParcelable(Category.class.getClassLoader());
+        transaction_id = in.readInt();
+        wallet_id = in.readInt();
+        category_id = in.readInt();
+        transaction_amount = in.readInt();
+        transaction_note = in.readString();
+        transaction_date = new Date(in.readLong());
     }
 
     public static final Creator<MoneyTransaction> CREATOR = new Creator<MoneyTransaction>() {
@@ -38,40 +49,53 @@ public class MoneyTransaction implements Parcelable {
         }
     };
 
-    public int getTransactionAmount() {
-        return transactionAmount;
+    public int getTransaction_id() {
+        return transaction_id;
     }
 
-    public void setTransactionAmount(int transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setTransaction_id(int transaction_id) {
+        this.transaction_id = transaction_id;
     }
 
-    public String getTransactionType() {
-        return transactionType;
+    public int getWallet_id() {
+        return wallet_id;
     }
 
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
+    public void setWallet_id(int wallet_id) {
+        this.wallet_id = wallet_id;
     }
 
-    public Category getTransactionCategory() {
-        return transactionCategory;
+    public int getCategory_id() {
+        return category_id;
     }
 
-    public void setTransactionCategory(Category transactionCategory) {
-        this.transactionCategory = transactionCategory;
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
-    public Date getTransactionDate() { return transactionDate; }
-    public String getFormattedTransactionDate() {
-        DateFormat df = new SimpleDateFormat("E, dd MMM yyyy");
-        return df.format(this.transactionDate);
+    public int getTransaction_amount() {
+        return transaction_amount;
     }
 
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
+    public void setTransaction_amount(int transaction_amount) {
+        this.transaction_amount = transaction_amount;
     }
 
+    public String getTransaction_note() {
+        return transaction_note;
+    }
+
+    public void setTransaction_note(String transaction_note) {
+        this.transaction_note = transaction_note;
+    }
+
+    public Date getTransaction_date() {
+        return transaction_date;
+    }
+
+    public void setTransaction_date(Date transaction_date) {
+        this.transaction_date = transaction_date;
+    }
 
     @Override
     public int describeContents() {
@@ -80,8 +104,11 @@ public class MoneyTransaction implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(transactionAmount);
-        parcel.writeString(transactionType);
-        parcel.writeParcelable(transactionCategory, i);
+        parcel.writeInt(transaction_id);
+        parcel.writeInt(wallet_id);
+        parcel.writeInt(category_id);
+        parcel.writeInt(transaction_amount);
+        parcel.writeString(transaction_note);
+        parcel.writeLong(transaction_date.getTime());
     }
 }

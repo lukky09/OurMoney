@@ -3,7 +3,14 @@ package com.example.ourmoney.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "category")
 public class Category implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    private int categoryId;
     private String categoryName;
     private String categoryType;
 
@@ -28,6 +35,14 @@ public class Category implements Parcelable {
             return new Category[size];
         }
     };
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public String getCategoryName() {
         return categoryName;
