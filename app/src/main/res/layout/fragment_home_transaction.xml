@@ -5,47 +5,49 @@
     android:id="@+id/ConstraintHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="15dp"
     tools:context=".Fragments.HomeFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/lblOurMoney"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:fontFamily="sans-serif-light"
             android:gravity="left"
             android:text="Selamat datang, User"
             android:textColor="?attr/colorSecondary"
             android:textSize="34sp"
-            android:textStyle="bold"
-            android:layout_alignParentTop="true"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lblYourCash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/lblOurMoney"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-light"
             android:gravity="left"
             android:text="Saldo anda"
             android:textColor="?attr/colorSecondary"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_below="@id/lblOurMoney"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lblBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/lblYourCash"
             android:layout_marginTop="12dp"
             android:text="Rp 0,00"
             android:textColor="?attr/colorSecondary"
             android:textSize="38sp"
-            android:textStyle="bold"
-            android:layout_below="@id/lblYourCash"/>
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHome"
@@ -63,9 +65,9 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="10dp"
         android:backgroundTint="@color/OurRedLight"
-        app:rippleColor="@color/OurRed"
         android:text="Tambah Transaksi"
         app:icon="@drawable/ic_baseline_add_24"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:rippleColor="@color/OurRed" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

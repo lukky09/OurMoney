@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OurMoney">
         <activity
+            android:name=".Activities.AddTargetActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activities.AddTransactionActivity"
             android:exported="true" />
         <activity

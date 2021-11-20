@@ -31,6 +31,7 @@ import java.util.ArrayList;
  */
 public class AddTransactionFragment extends Fragment {
 
+    //SEMENTARA TIDAK DIPAKAI
     private static String parameterarg1 = "inibolehsembarangtah";
     private static final String parameterarg2 = "gatau";
     private static final String parameterarg3 = "mungkin";
