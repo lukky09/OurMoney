@@ -5,8 +5,12 @@
       <map>
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/drawable/OurMoney_background.xml" value="0.14635416666666667" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_add_target.xml" value="0.23324275362318841" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_add_transaction.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_category_and_wallet.xml" value="0.23324275362318841" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_main.xml" value="0.48946840521564694" />
-        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_add_transaction.xml" value="0.4" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_report.xml" value="0.23324275362318841" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_add_transaction.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_home_transaction.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_saving_cash.xml" value="0.264" />
