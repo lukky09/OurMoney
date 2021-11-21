@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,21 +23,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.MoneyTransaction;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
+import com.example.ourmoney.databinding.ActivityCategoryAndWalletBinding;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CategoryAndWalletActivity extends AppCompatActivity {
 
     boolean isCategory;
-    ListView lv;
+    ActivityCategoryAndWalletBinding binding;
     ArrayList<Wallet> daftarwallet;
-    ArrayList<Category> katmasuk, katkeluar;
-    Button hiddenkeluaran, hiddenmasukan;
-    LinearLayout ll;
-    TextView title;
+    ArrayList<Category> daftarkategori;
+    Button hiddenmasukan,hiddenkeluaran;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,43 +50,28 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category_and_wallet);
 
         isCategory = getIntent().getBooleanExtra("isCategory", true);
-        lv = findViewById(R.id.listviewcatwal);
-        ll = findViewById(R.id.ll);
-        title = findViewById(R.id.tvtitlecatandwal);
+        binding = ActivityCategoryAndWalletBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         if (isCategory) {
-            katmasuk = getIntent().getParcelableArrayListExtra("masukan");
             hiddenmasukan = new Button(this);
             hiddenmasukan.setText("Pemasukan");
             hiddenmasukan.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-            ll.addView(hiddenmasukan);
-            hiddenmasukan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showPemasukan();
-                }
-            });
+            binding.ll.addView(hiddenmasukan);
+            hiddenmasukan.setOnClickListener(view -> showKategori(false));
 
-            katkeluar = getIntent().getParcelableArrayListExtra("keluaran");
             hiddenkeluaran = new Button(this);
             hiddenkeluaran.setText("Pengeluaran");
             hiddenkeluaran.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-            ll.addView(hiddenkeluaran);
-            hiddenkeluaran.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showPengeluaran();
-                }
-            });
+            binding.ll.addView(hiddenkeluaran);
+            hiddenkeluaran.setOnClickListener(view -> showKategori(true));
 
-            showPemasukan();
 
         } else {
-            title.setText("Wallet");
-            daftarwallet = getIntent().getParcelableArrayListExtra("wallets");
-            ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, android.R.layout.simple_list_item_1, android.R.id.text1, daftarwallet);
-            lv.setAdapter(adapter);
+            binding.tvtitlecatandwal.setText("Wallet");
         }
+
+        getdata(false);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.show();
@@ -91,26 +85,12 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent i = new Intent();
-                if(isCategory){
-                    i.putParcelableArrayListExtra("2", katmasuk);
-                    i.putParcelableArrayListExtra("3", katkeluar);
-                    setResult(69, i);
-                }else{
-                    i.putParcelableArrayListExtra("1", daftarwallet);
-                    setResult(70, i);
-                }
-
+                setResult(69, i);
                 finish();
                 break;
             case R.id.additem:
                 Intent in = new Intent(this, AddCategoryOrWalletActivity.class);
                 in.putExtra("iscategory", isCategory);
-                if (isCategory) {
-                    in.putParcelableArrayListExtra("in", katmasuk);
-                    in.putParcelableArrayListExtra("out", katkeluar);
-                } else {
-                    in.putParcelableArrayListExtra("dftwallet", daftarwallet);
-                }
                 startActivityForResult(in, 1);
         }
         return true;
@@ -123,32 +103,78 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
         return true;
     }
 
-    void showPemasukan() {
-        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(CategoryAndWalletActivity.this, android.R.layout.simple_list_item_1, katmasuk);
-        lv.setAdapter(adapter);
-        title.setText("Kategori Pemasukan");
+    void getdata(boolean isPengeluaran){
+        new GetBoth(this, new GetBoth.AddTransactionCallback() {
+            @Override
+            public void postExecute(List<Wallet> wallet, List<Category> categories) {
+                daftarwallet = new ArrayList<>();
+                daftarwallet.addAll(wallet);
+                daftarkategori = new ArrayList<>();
+                daftarkategori.addAll(categories);
+                if(isCategory){
+                    showKategori(isPengeluaran);
+                }else{
+                    ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(CategoryAndWalletActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, daftarwallet);
+                    binding.listviewcatwal.setAdapter(adapter);
+                }
+            }
+        }).execute();
     }
 
-    void showPengeluaran() {
-        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(CategoryAndWalletActivity.this, android.R.layout.simple_list_item_1, katkeluar);
-        lv.setAdapter(adapter);
-        title.setText("Kategori Pengeluaran");
+    void showKategori(boolean isPengeluaran) {
+        ArrayList<Category> listca = new ArrayList<>();
+        for (Category c : daftarkategori) {
+            if (isPengeluaran == c.isPengeluaran()) {
+                listca.add(c);
+            }
+        }
+        ArrayAdapter<Category> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listca);
+        binding.listviewcatwal.setAdapter(adapter);
+        if (isPengeluaran) {
+            binding.tvtitlecatandwal.setText("Kategori Pengeluaran");
+            hiddenkeluaran.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.crimson_red));
+            hiddenmasukan.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
+        } else {
+            binding.tvtitlecatandwal.setText("Kategori Pemasukan");
+            hiddenmasukan.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.lime_green));
+            hiddenkeluaran.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 0) {
-            //utk result category
-            Category c = data.getParcelableExtra("kat");
-            if (c.getCategoryType().equals("Pengeluaran")) katkeluar.add(c);
-            else katmasuk.add(c);
-            showPemasukan();
-        } else if (resultCode == 1) {
-            //utk result category
-            daftarwallet.add(data.getParcelableExtra("wal"));
-            ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, android.R.layout.simple_list_item_1, android.R.id.text1, daftarwallet);
-            lv.setAdapter(adapter);
-        }
+        getdata(false);
+    }
+}
+
+class GetBoth{
+    private WeakReference<Context> weakContext;
+    private WeakReference<AddTransactionCallback> weakCallback;
+
+    public GetBoth( Context context, AddTransactionCallback callback){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+    }
+
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            List<Wallet> lw = appDatabase.appDao().getallWallets();
+            List<Category> lc = appDatabase.appDao().getallCategories();
+
+            handler.post(()->{
+                weakCallback.get().postExecute(lw,lc);
+            });
+        });
+    }
+
+    interface AddTransactionCallback{
+        void postExecute(List<Wallet> wallet,List<Category> categories);
     }
 }

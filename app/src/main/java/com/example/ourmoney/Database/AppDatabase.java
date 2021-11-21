@@ -9,8 +9,9 @@ import androidx.room.TypeConverters;
 
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.Wallet;
 
-@Database(entities = {MoneyTransaction.class, Category.class}, version = 1)
+@Database(entities = {MoneyTransaction.class, Category.class, Wallet.class}, version = 1)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AppDao appDao();

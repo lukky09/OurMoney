@@ -6,11 +6,13 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.ourmoney.Activities.AddTransactionActivity;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Entity(tableName = "transaction")
+@Entity(tableName = "transactions")
 public class MoneyTransaction implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int transaction_id;

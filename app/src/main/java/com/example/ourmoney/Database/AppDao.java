@@ -3,16 +3,20 @@ package com.example.ourmoney.Database;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
 import com.example.ourmoney.Models.Wallet;
 
+import java.util.List;
+
 @Dao
 public interface AppDao {
 
     // DAO MONEY TRANSACTION ---------------------------------------------
+
     @Insert
     void insertTransaction(MoneyTransaction transaction);
 
@@ -23,6 +27,13 @@ public interface AppDao {
     void deleteTransaction(MoneyTransaction transaction);
 
     // DAO CATEGORY ------------------------------------------------------
+
+    @Query("select * from category")
+    List<Category> getallCategories();
+
+    @Query("select * from category where lower(categoryName)=lower(:name)")
+    List<Category> getCategorybyName(String name);
+
     @Insert
     void insertCategory(Category category);
 
@@ -33,8 +44,15 @@ public interface AppDao {
     void deleteCategory(Category category);
 
     // DAO WALLET --------------------------------------------------------
-//    @Insert
-//    void insertWallet(Wallet wallet);
+
+    @Query("select * from wallets")
+    List<Wallet> getallWallets();
+
+    @Query("select * from wallets where lower(walletName)=lower(:name)")
+    List<Wallet> getWalletbyName(String name);
+
+    @Insert
+    void insertWallet(Wallet wallet);
 //
 //    @Update
 //    void updateWallet(Wallet wallet);

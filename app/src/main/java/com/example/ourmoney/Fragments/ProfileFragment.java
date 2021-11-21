@@ -74,8 +74,6 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CategoryAndWalletActivity.class);
                 i.putExtra("isCategory",true);
-                i.putParcelableArrayListExtra("masukan",daftarcatmasukfrag);
-                i.putParcelableArrayListExtra("keluaran",daftarcatkeluarfrag);
                 startActivityForResult(i,69);
             }
         });
@@ -85,7 +83,6 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CategoryAndWalletActivity.class);
                 i.putExtra("isCategory",false);
-                i.putParcelableArrayListExtra("wallets",daftarwalletfrag);
                 startActivityForResult(i,69);
             }
         });
@@ -103,15 +100,5 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==69){
-            daftarcatmasukfrag.clear();
-            daftarcatmasukfrag.addAll(data.getParcelableArrayListExtra("3"));
-
-            daftarcatkeluarfrag.clear();
-            daftarcatkeluarfrag.addAll(data.getParcelableArrayListExtra("2")) ;
-        }else if(resultCode==70){
-            daftarwalletfrag.clear();
-            daftarwalletfrag.addAll(data.getParcelableArrayListExtra("1")) ;
-        }
     }
 }

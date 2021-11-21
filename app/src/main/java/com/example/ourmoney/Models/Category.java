@@ -12,16 +12,25 @@ public class Category implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int categoryId;
     private String categoryName;
-    private String categoryType;
+    private boolean isPengeluaran;
 
-    public Category(String categoryName, String categoryType) {
+    public Category(String categoryName, boolean isPengeluaran) {
         this.categoryName = categoryName;
-        this.categoryType = categoryType;
+        this.isPengeluaran = isPengeluaran;
+    }
+
+    public boolean isPengeluaran() {
+        return isPengeluaran;
+    }
+
+    public void setPengeluaran(boolean pengeluaran) {
+        isPengeluaran = pengeluaran;
     }
 
     protected Category(Parcel in) {
+        categoryId = in.readInt();
         categoryName = in.readString();
-        categoryType = in.readString();
+        isPengeluaran = in.readByte() != 0;
     }
 
     public static final Creator<Category> CREATOR = new Creator<Category>() {
@@ -52,13 +61,6 @@ public class Category implements Parcelable {
         this.categoryName = categoryName;
     }
 
-    public String getCategoryType() {
-        return categoryType;
-    }
-
-    public void setCategoryType(String categoryType) {
-        this.categoryType = categoryType;
-    }
 
     @Override
     public String toString() {
@@ -72,8 +74,9 @@ public class Category implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(categoryId);
         parcel.writeString(categoryName);
-        parcel.writeString(categoryType);
+        parcel.writeByte((byte) (isPengeluaran ? 1 : 0));
     }
 }
 

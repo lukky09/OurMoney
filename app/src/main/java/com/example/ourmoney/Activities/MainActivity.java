@@ -65,14 +65,14 @@ public class MainActivity extends AppCompatActivity {
         daftarkategorikeluar = new ArrayList<>();
         daftarkategorimasuk = new ArrayList<>();
 
-        daftarwallet.add(new Wallet("Wallet1", 0, new ArrayList<MoneyTransaction>()));
-        daftarwallet.add(new Wallet("Wallet2", 0, new ArrayList<MoneyTransaction>()));
+        daftarwallet.add(new Wallet("Wallet1", 0));
+        daftarwallet.add(new Wallet("Wallet2", 0));
 
-        daftarkategorikeluar.add(new Category("Makanan", "Pengeluaran"));
-        daftarkategorikeluar.add(new Category("Minuman", "Pengeluaran"));
+        daftarkategorikeluar.add(new Category("Makanan", true));
+        daftarkategorikeluar.add(new Category("Minuman", true));
 
-        daftarkategorimasuk.add(new Category("Gaji", "Pemasukan"));
-        daftarkategorimasuk.add(new Category("Bonus", "Pemasukan"));
+        daftarkategorimasuk.add(new Category("Gaji", false));
+        daftarkategorimasuk.add(new Category("Bonus", false));
 
         Fragment welcomeFragment;
         welcomeFragment = HomeFragment.newInstance(daftarwallet);

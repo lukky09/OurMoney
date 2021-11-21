@@ -64,6 +64,7 @@
         android:id="@+id/btncatwal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="add wallet"
-        android:onClick="additem"/>
+        android:onClick="additem"
+        android:text="Tambah Wallet" />
+
 </LinearLayout>
