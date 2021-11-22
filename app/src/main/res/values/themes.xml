@@ -36,4 +36,8 @@
     <style name="Theme.OurMoney.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.OurMoney.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="splashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/app_splash</item>
+        <item name="colorPrimary">@color/OurRedCharmingBackground</item>
+    </style>
 </resources>

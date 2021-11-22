@@ -86,7 +86,10 @@ public class HomeFragment extends Fragment {
         String displayBalance = String.format("%,8d%n",totalBalance);
         binding.lblBalance.setText("Rp "+displayBalance);
 
+        System.out.println("Current amount of transaction is "+daftarwallet.size());
+
         binding.fabAddTransaction.setOnClickListener(this::onClick);
+
     }
 
     ActivityResultLauncher<Intent> addTransRL = registerForActivityResult(

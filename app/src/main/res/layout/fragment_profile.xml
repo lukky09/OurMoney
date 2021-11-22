@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nama User"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorSecondary"
             android:textSize="30sp" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Saldo Anda:"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorSecondary"
             android:textSize="30sp" />
     </LinearLayout>
 
@@ -48,7 +48,7 @@
         android:gravity="start"
         android:text="Pengaturan"
         android:textAllCaps="false"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="?attr/colorSecondary"
         android:textSize="24sp"
         android:textStyle="normal"
         app:cornerRadius="0dp"
@@ -69,7 +69,7 @@
         android:gravity="start"
         android:text="Kelola Wallet"
         android:textAllCaps="false"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="?attr/colorSecondary"
         android:textSize="24sp"
         android:textStyle="normal"
         app:cornerRadius="0dp"
@@ -90,7 +90,7 @@
         android:gravity="start"
         android:text="Kelola Kategori"
         android:textAllCaps="false"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="?attr/colorSecondary"
         android:textSize="24sp"
         android:textStyle="normal"
         app:cornerRadius="0dp"
@@ -110,7 +110,7 @@
         android:gravity="start"
         android:text="Ekspor Data"
         android:textAllCaps="false"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="?attr/colorSecondary"
         android:textSize="24sp"
         android:textStyle="normal"
         app:cornerRadius="0dp"

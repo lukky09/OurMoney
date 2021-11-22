@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                 }
+
                 return true;
             }
         });

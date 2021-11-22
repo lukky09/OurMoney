@@ -119,6 +119,7 @@
         android:id="@+id/btnAddSaving"
         android:layout_width="379dp"
         android:layout_height="65dp"
+        android:backgroundTint="@color/OurRed"
         android:text="Buat Target Baru"
         android:textSize="24sp"
         app:cornerRadius="32.5dp"
