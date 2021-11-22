@@ -30,15 +30,12 @@ public class ProfileFragment extends Fragment {
     TextView jumduit;
     Button setting, kategori, wallet, expor;
     ArrayList<Wallet> daftarwalletfrag;
-    ArrayList<Category> daftarcatmasukfrag, daftarcatkeluarfrag;
 
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(ArrayList<Wallet> w, ArrayList<Category> kmasuk, ArrayList<Category> kkeluar) {
+    public static ProfileFragment newInstance(ArrayList<Wallet> w) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_PARAM1, w);
-        args.putParcelableArrayList(ARG_PARAM2, kmasuk);
-        args.putParcelableArrayList(ARG_PARAM3, kkeluar);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,8 +45,6 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             daftarwalletfrag = getArguments().getParcelableArrayList(ARG_PARAM1);
-            daftarcatmasukfrag = getArguments().getParcelableArrayList(ARG_PARAM2);
-            daftarcatkeluarfrag = getArguments().getParcelableArrayList(ARG_PARAM3);
         }
     }
 
