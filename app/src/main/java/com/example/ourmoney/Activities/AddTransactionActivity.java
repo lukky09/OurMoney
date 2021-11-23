@@ -15,10 +15,13 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.ourmoney.Database.AppDatabase;
+import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
 import com.example.ourmoney.databinding.ActivityAddTransactionBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -29,7 +32,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,6 +44,11 @@ public class AddTransactionActivity extends AppCompatActivity {
     ActivityAddTransactionBinding binding;
     MaterialDatePicker<Long> datePicker;
     Date selectedDate;
+    ArrayList<Wallet> daftarwallet;
+    ArrayList<Category> daftarcategory,daftarcategorysorted;
+    ArrayAdapter<Wallet> walletadapter;
+    ArrayAdapter<Category> categoryadapter;
+    boolean isPengeluaran;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,8 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         binding = ActivityAddTransactionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getData();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.show();
@@ -94,17 +106,52 @@ public class AddTransactionActivity extends AppCompatActivity {
         });
     }
 
+    private void getData(){
+        new GetBoth(this, new GetBoth.AddTransactionCallback() {
+            @Override
+            public void postExecute(List<Wallet> wallet, List<Category> categories) {
+                daftarwallet = new ArrayList<>();
+                daftarcategory = new ArrayList<>();
+                daftarcategorysorted = new ArrayList<>();
+                daftarwallet.addAll(wallet);
+                daftarcategory.addAll(categories);
+                walletadapter = new ArrayAdapter<>(AddTransactionActivity.this, android.R.layout.simple_list_item_1, daftarwallet);
+                binding.spinnerWallet.setAdapter(walletadapter);
+                for (Category ca:daftarcategory) {
+                    if(ca.isPengeluaran())daftarcategorysorted.add(ca);
+                }
+                categoryadapter = new ArrayAdapter<>(AddTransactionActivity.this, android.R.layout.simple_list_item_1, daftarcategorysorted);
+                binding.spinnerCategory.setAdapter(categoryadapter);
+                isPengeluaran = true;
+            }
+        }).execute();
+    }
+
     private void onClick(View view){
         int viewID = view.getId();
         if (viewID == R.id.btnExpense){
             binding.btnExpense.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.crimson_red));
             binding.btnIncome.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
             binding.outlinedTextField.setHint("Pengeluaran");
+            if(!isPengeluaran){
+                daftarcategorysorted.clear();
+                for (Category ca:daftarcategory) {
+                    if(ca.isPengeluaran())daftarcategorysorted.add(ca);
+                }
+                categoryadapter.notifyDataSetChanged();
+            }
         }
         else if (viewID == R.id.btnIncome){
             binding.btnExpense.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
             binding.btnIncome.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.lime_green));
             binding.outlinedTextField.setHint("Pemasukan");
+            if(isPengeluaran){
+                daftarcategorysorted.clear();
+                for (Category ca:daftarcategory) {
+                    if(!ca.isPengeluaran())daftarcategorysorted.add(ca);
+                }
+                categoryadapter.notifyDataSetChanged();
+            }
         }
         else if (viewID == R.id.btnAddTransaction){
             if (TextUtils.isEmpty(binding.tbAmount.getText())){
@@ -122,7 +169,8 @@ public class AddTransactionActivity extends AppCompatActivity {
             }
 
             String note = binding.tbNote.getText().toString();
-            MoneyTransaction transaction = new MoneyTransaction(1, 1, amount, note, selectedDate);
+            MoneyTransaction transaction = new MoneyTransaction(daftarwallet.get(binding.spinnerWallet.getSelectedItemPosition()).getWallet_id(),
+                    daftarcategorysorted.get(binding.spinnerCategory.getSelectedItemPosition()).getCategoryId(), amount, note, selectedDate);
 
             new AddTransactionAsync(transaction, this, new AddTransactionAsync.AddTransactionCallback() {
                 @Override
@@ -169,6 +217,14 @@ class AddTransactionAsync {
             Context context = weakContext.get();
             AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
 
+            Wallet w= appDatabase.appDao().getWalletbyID(transaction.getWallet_id()).get(0);
+            Category c = appDatabase.appDao().getCategorybyID(transaction.getCategory_id()).get(0);
+            if(c.isPengeluaran()){
+                w.setWalletAmount(w.getWalletAmount()-transaction.getTransaction_amount());
+            }else{
+                w.setWalletAmount(w.getWalletAmount()+transaction.getTransaction_amount());
+            }
+            appDatabase.appDao().updateWallet(w);
             appDatabase.appDao().insertTransaction(transaction);
 
             handler.post(()->{

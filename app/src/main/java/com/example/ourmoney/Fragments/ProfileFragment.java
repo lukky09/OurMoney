@@ -24,8 +24,6 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final String ARG_PARAM3 = "param3";
 
     TextView jumduit;
     Button setting, kategori, wallet, expor;

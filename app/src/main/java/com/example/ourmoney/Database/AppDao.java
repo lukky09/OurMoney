@@ -34,6 +34,9 @@ public interface AppDao {
     @Query("select * from category where lower(categoryName)=lower(:name)")
     List<Category> getCategorybyName(String name);
 
+    @Query("select * from category where categoryId=:id")
+    List<Category> getCategorybyID(int id);
+
     @Insert
     void insertCategory(Category category);
 
@@ -51,11 +54,14 @@ public interface AppDao {
     @Query("select * from wallets where lower(walletName)=lower(:name)")
     List<Wallet> getWalletbyName(String name);
 
+    @Query("select * from wallets where wallet_id=:id")
+    List<Wallet> getWalletbyID(int id);
+
     @Insert
     void insertWallet(Wallet wallet);
-//
-//    @Update
-//    void updateWallet(Wallet wallet);
+
+    @Update
+    void updateWallet(Wallet wallet);
 //
 //    @Delete
 //    void deleteWallet(Wallet wallet);

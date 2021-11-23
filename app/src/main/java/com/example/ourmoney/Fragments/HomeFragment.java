@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ourmoney.Activities.AddTransactionActivity;
+import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.R;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.databinding.FragmentHomeTransactionBinding;
@@ -34,25 +35,17 @@ public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
 
     ArrayList<Wallet> daftarwallet;
+    ArrayList<Category> daftarkateg;
 
     FragmentHomeTransactionBinding binding;
 
-    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    public static HomeFragment newInstance(ArrayList<Wallet> w) {
+    public static HomeFragment newInstance(ArrayList<Wallet> w ){
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_PARAM1, w);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,7 +55,6 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             daftarwallet = getArguments().getParcelableArrayList(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
