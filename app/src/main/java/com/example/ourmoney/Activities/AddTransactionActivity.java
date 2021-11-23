@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import com.example.ourmoney.R;
 import com.example.ourmoney.databinding.ActivityAddTransactionBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
@@ -33,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +46,7 @@ public class AddTransactionActivity extends AppCompatActivity {
 
     ActivityAddTransactionBinding binding;
     MaterialDatePicker<Long> datePicker;
-    Date selectedDate;
+    Date selectedDate = new Date();
     ArrayList<Wallet> daftarwallet;
     ArrayList<Category> daftarcategory,daftarcategorysorted;
     ArrayAdapter<Wallet> walletadapter;
@@ -87,10 +90,14 @@ public class AddTransactionActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) { }
         });
 
+        System.out.println(selectedDate);
+
         // buat date picker dari material design
         MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("Pilih Tanggal");
         datePicker = builder.build();
+        String today = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        binding.btnDatePicker.setText(today);
         binding.btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,33 +140,29 @@ public class AddTransactionActivity extends AppCompatActivity {
             binding.btnExpense.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.crimson_red));
             binding.btnIncome.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
             binding.outlinedTextField.setHint("Pengeluaran");
-            if(!isPengeluaran){
-                daftarcategorysorted.clear();
-                for (Category ca:daftarcategory) {
-                    if(ca.isPengeluaran())daftarcategorysorted.add(ca);
-                }
-                categoryadapter.notifyDataSetChanged();
+
+            isPengeluaran = true;
+            daftarcategorysorted.clear();
+            for (Category ca:daftarcategory) {
+                if(ca.isPengeluaran())daftarcategorysorted.add(ca);
             }
+            categoryadapter.notifyDataSetChanged();
         }
         else if (viewID == R.id.btnIncome){
             binding.btnExpense.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
             binding.btnIncome.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.lime_green));
             binding.outlinedTextField.setHint("Pemasukan");
-            if(isPengeluaran){
-                daftarcategorysorted.clear();
-                for (Category ca:daftarcategory) {
-                    if(!ca.isPengeluaran())daftarcategorysorted.add(ca);
-                }
-                categoryadapter.notifyDataSetChanged();
+
+            isPengeluaran = false;
+            daftarcategorysorted.clear();
+            for (Category ca:daftarcategory) {
+                if(!ca.isPengeluaran())daftarcategorysorted.add(ca);
             }
+            categoryadapter.notifyDataSetChanged();
         }
         else if (viewID == R.id.btnAddTransaction){
             if (TextUtils.isEmpty(binding.tbAmount.getText())){
                 binding.tbAmount.setError("Nominal Harus diisi");
-                return;
-            }
-            if (selectedDate == null){
-                binding.btnDatePicker.setError("Tanggal harus diisi");
                 return;
             }
             int amount = Integer.parseInt(binding.tbAmount.getText().toString());
@@ -167,24 +170,43 @@ public class AddTransactionActivity extends AppCompatActivity {
                 binding.tbAmount.setError("Harus lebih besar dari 0");
                 return;
             }
-
             String note = binding.tbNote.getText().toString();
             MoneyTransaction transaction = new MoneyTransaction(daftarwallet.get(binding.spinnerWallet.getSelectedItemPosition()).getWallet_id(),
                     daftarcategorysorted.get(binding.spinnerCategory.getSelectedItemPosition()).getCategoryId(), amount, note, selectedDate);
 
-            new AddTransactionAsync(transaction, this, new AddTransactionAsync.AddTransactionCallback() {
-                @Override
-                public void preExecute() { }
+            if (isPengeluaran){
+                if (amount > daftarwallet.get(binding.spinnerWallet.getSelectedItemPosition()).getWalletAmount()){
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddTransactionActivity.this);
+                    builder.setTitle("Warning");
+                    builder.setMessage("Nominal yang anda masukan melebihi budget wallet anda. lanjutkan?");
 
-                @Override
-                public void postExecute(String msg) {
-                    Intent intent = new Intent();
-                    intent.putExtra("msg", msg);
-                    setResult(100, intent);
-                    finish();
+                    builder.setPositiveButton("Ya", (dialogInterface, i) -> continueTransaction(transaction));
+                    builder.setNegativeButton("Tidak", (dialogInterface, i) -> {});
+                    builder.show();
                 }
-            }).execute();
+                else{
+                    continueTransaction(transaction);
+                }
+            }
+            else{
+                continueTransaction(transaction);
+            }
         }
+    }
+
+    private void continueTransaction(MoneyTransaction transaction){
+        new AddTransactionAsync(transaction, this, new AddTransactionAsync.AddTransactionCallback() {
+            @Override
+            public void preExecute() { }
+
+            @Override
+            public void postExecute(String msg) {
+                Intent intent = new Intent();
+                intent.putExtra("msg", msg);
+                setResult(100, intent);
+                finish();
+            }
+        }).execute();
     }
 
     @Override
