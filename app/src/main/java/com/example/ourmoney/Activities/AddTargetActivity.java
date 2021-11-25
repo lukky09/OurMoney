@@ -2,18 +2,30 @@ package com.example.ourmoney.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ourmoney.Database.AppDatabase;
+import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.SavingTarget;
+import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.databinding.ActivityAddTargetBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AddTargetActivity extends AppCompatActivity {
 
@@ -51,7 +63,18 @@ public class AddTargetActivity extends AppCompatActivity {
     public void addTarget(View view){
         Date today = new Date();
         if(today.getTime() < selectedDate.getTime()){
+            SavingTarget newTarget = new SavingTarget(Double.parseDouble(binding.edTargetamount.getText().toString()),today,selectedDate);
+            new AddUpdateTargetAsync(newTarget, getApplicationContext(), new AddUpdateTargetAsync.TargetCallback() {
+                @Override
+                public void preExecute() {
 
+                }
+
+                @Override
+                public void postExecute(String msg) {
+                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                }
+            }).execute();
             finish();
         }else{
             Toast.makeText(getApplicationContext(), "Target deadline tidak boleh sebelum hari ini", Toast.LENGTH_SHORT).show();
@@ -60,5 +83,43 @@ public class AddTargetActivity extends AppCompatActivity {
 }
 
 class AddUpdateTargetAsync{
+    private final WeakReference<Context> weakContext;
+    private final WeakReference<AddUpdateTargetAsync.TargetCallback> weakCallback;
+    private SavingTarget target;
 
+    public AddUpdateTargetAsync(SavingTarget target, Context context, AddUpdateTargetAsync.TargetCallback callback){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+        this.target = target;
+    }
+
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        weakCallback.get().preExecute();
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            List<SavingTarget> list = appDatabase.appDao().getTarget();
+            SavingTarget current = list.get(0);
+            current.setTargetCreated(target.getTargetCreated());
+            current.setTargetDeadline(target.getTargetDeadline());
+            current.setTargetAmount(target.getTargetAmount());
+            current.setAccumulated(target.getAccumulated());
+            current.setActive(true);
+
+            appDatabase.appDao().updateTarget(current);
+
+            handler.post(()->{
+                weakCallback.get().postExecute("Target Baru Ditambahkan");
+            });
+        });
+    }
+
+    interface TargetCallback{
+        void preExecute();
+        void postExecute(String msg);
+    }
 }
