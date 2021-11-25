@@ -3,6 +3,7 @@ package com.example.ourmoney.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -75,6 +76,9 @@ public class AddTargetActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                 }
             }).execute();
+            Intent back = new Intent();
+            back.putExtra("Target", newTarget);
+            setResult(110, back);
             finish();
         }else{
             Toast.makeText(getApplicationContext(), "Target deadline tidak boleh sebelum hari ini", Toast.LENGTH_SHORT).show();

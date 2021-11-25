@@ -1,8 +1,13 @@
 package com.example.ourmoney.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ourmoney.Activities.AddTargetActivity;
+import com.example.ourmoney.Activities.MainActivity;
 import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.R;
 import com.example.ourmoney.databinding.FragmentSavingCashBinding;
@@ -71,6 +77,18 @@ public class SavingCashFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        MainActivity parent = (MainActivity) getActivity();
+//        parent.getData();
+        ActivityResultLauncher<Intent> act = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == 110){
+                    Intent results = result.getData();
+                    target = results.getParcelableExtra("Target");
+                }
+            }
+        });
+
         long today = new Date().getTime();
         long deadline = target.getTargetDeadline().getTime();
         if(today> deadline){
@@ -91,7 +109,7 @@ public class SavingCashFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), AddTargetActivity.class);
-                startActivity(i);
+                act.launch(i);
             }
         });
 

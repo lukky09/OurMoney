@@ -1,5 +1,9 @@
 package com.example.ourmoney.Activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -54,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
         navbar = findViewById(R.id.bottomNavigationView);
 
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                getData();
+            }
+        });
+
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -62,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.homeFragment:
                         frag = HomeFragment.newInstance(daftarwallet);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+
                         break;
                     case R.id.manageFragment:
                         frag = SavingCashFragment.newInstance(currentTarget);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+
                         break;
                     case R.id.reportFragment:
                         Toast.makeText(MainActivity.this, "Reporto", Toast.LENGTH_SHORT).show();
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void getData(){
+    public void getData(){
         new GetBoth(this, new GetBoth.AddTransactionCallback() {
             @Override
             public void postExecute(List<Wallet> wallet, List<Category> categories) {
