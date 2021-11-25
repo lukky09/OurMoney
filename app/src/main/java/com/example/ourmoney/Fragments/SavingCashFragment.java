@@ -1,5 +1,6 @@
 package com.example.ourmoney.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ourmoney.Activities.AddTargetActivity;
 import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.R;
 import com.example.ourmoney.databinding.FragmentSavingCashBinding;
@@ -84,6 +86,14 @@ public class SavingCashFragment extends Fragment {
             binding.tvtarget.setText("No active target");
             binding.tvprogressangka.setText("No active target");
         }
+
+        binding.btnAddSaving.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), AddTargetActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 }
