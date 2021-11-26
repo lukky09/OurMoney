@@ -51,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new AddPresetData(this, () -> {
-            getData();
-        }).execute();
+        new AddPresetData(this, this::getData).execute();
 
 
         navbar = findViewById(R.id.bottomNavigationView);

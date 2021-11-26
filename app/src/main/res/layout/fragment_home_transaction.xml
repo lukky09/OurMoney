@@ -5,7 +5,8 @@
     android:id="@+id/ConstraintHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
+    android:paddingTop="15dp"
+    android:paddingHorizontal="15dp"
     tools:context=".Fragments.HomeFragment">
 
     <RelativeLayout
