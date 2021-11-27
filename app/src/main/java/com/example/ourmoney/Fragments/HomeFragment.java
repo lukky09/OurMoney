@@ -1,5 +1,6 @@
 package com.example.ourmoney.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,20 +11,29 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ourmoney.Activities.AddTransactionActivity;
+import com.example.ourmoney.Database.AppDatabase;
+import com.example.ourmoney.Models.Adapter.TransactionAdapter;
 import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.TransactionWithRelation;
 import com.example.ourmoney.R;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.databinding.FragmentHomeTransactionBinding;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +48,8 @@ public class HomeFragment extends Fragment {
 
     ArrayList<Wallet> daftarwallet;
     ArrayList<Category> daftarkateg;
+    ArrayList<TransactionWithRelation> transactions = new ArrayList<>();
+    TransactionAdapter adapter;
 
     FragmentHomeTransactionBinding binding;
 
@@ -82,6 +94,15 @@ public class HomeFragment extends Fragment {
 
         binding.fabAddTransaction.setOnClickListener(this::onClick);
 
+        new getTransactionAsync(getActivity(), new getTransactionAsync.getTransactionCallback() {
+            @Override
+            public void preExecute() {  }
+
+            @Override
+            public void postExecute(List<TransactionWithRelation> transactionList) {
+                setupRV(transactionList);
+            }
+        }).execute();
     }
 
     ActivityResultLauncher<Intent> addTransRL = registerForActivityResult(
@@ -103,5 +124,57 @@ public class HomeFragment extends Fragment {
             Intent moveData = new Intent(getActivity(), AddTransactionActivity.class);
             addTransRL.launch(moveData);
         }
+    }
+
+    private void setupRV(List<TransactionWithRelation> transactionList){
+        binding.rvHome.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvHome.setHasFixedSize(true);
+
+        transactions.addAll(transactionList);
+
+        System.out.println("tes");
+        adapter = new TransactionAdapter(transactions);
+        adapter.setOnItemClickCallback(new TransactionAdapter.OnItemClickCallback() {
+            @Override
+            public void onItemClicked(TransactionWithRelation transaction) {
+                System.out.println(transaction.transaction.getTransaction_id()
+                        +" - "+transaction.category.getCategoryName()
+                        +" - "+transaction.wallet.getWalletName());
+            }
+        });
+        binding.rvHome.setAdapter(adapter);
+    }
+}
+
+class getTransactionAsync {
+    private final WeakReference<Context> weakContext;
+    private final WeakReference<getTransactionCallback> weakCallback;
+    private List<TransactionWithRelation> transactionList;
+
+    public getTransactionAsync(Context context, getTransactionCallback callback){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+    }
+
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        weakCallback.get().preExecute();
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            transactionList = appDatabase.appDao().getAllTransactions();
+
+            handler.post(()->{
+                weakCallback.get().postExecute(transactionList);
+            });
+        });
+    }
+
+    interface getTransactionCallback{
+        void preExecute();
+        void postExecute(List<TransactionWithRelation> transactionList);
     }
 }

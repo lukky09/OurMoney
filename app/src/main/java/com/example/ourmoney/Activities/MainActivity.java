@@ -1,11 +1,16 @@
 package com.example.ourmoney.Activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.appsearch.GetSchemaResponse;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,12 +26,15 @@ import com.example.ourmoney.Fragments.ProfileFragment;
 import com.example.ourmoney.Fragments.SavingCashFragment;
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Wallet> daftarwallet;
     ArrayList<Category> daftarkategori;
+    SavingTarget currentTarget;
     BottomNavigationView navbar;
 
     @Override
@@ -42,12 +51,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new AddPresetData(this, () -> {
-            getData();
-        }).execute();
+        new AddPresetData(this, this::getData).execute();
 
 
         navbar = findViewById(R.id.bottomNavigationView);
+
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                getData();
+            }
+        });
 
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -57,10 +71,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.homeFragment:
                         frag = HomeFragment.newInstance(daftarwallet);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+
                         break;
                     case R.id.manageFragment:
-                        frag = SavingCashFragment.newInstance();
+                        frag = SavingCashFragment.newInstance(currentTarget);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+
                         break;
                     case R.id.reportFragment:
                         Toast.makeText(MainActivity.this, "Reporto", Toast.LENGTH_SHORT).show();
@@ -81,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void getData(){
+    public void getData(){
         new GetBoth(this, new GetBoth.AddTransactionCallback() {
             @Override
             public void postExecute(List<Wallet> wallet, List<Category> categories) {
@@ -94,12 +110,48 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
             }
         }).execute();
+        new GetTarget(this, new GetTarget.TargetCallback() {
+            @Override
+            public void postExecute(SavingTarget target) {
+                currentTarget = target;
+            }
+        }).execute();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         getData();
+    }
+}
+
+class GetTarget{
+    private final WeakReference<Context> weakContext;
+    private final WeakReference<GetTarget.TargetCallback> weakCallback;
+
+    public GetTarget(Context context, GetTarget.TargetCallback callback){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+    }
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            List<SavingTarget> list = appDatabase.appDao().getTarget();
+            SavingTarget target = list.get(0);
+
+            handler.post(()->{
+                weakCallback.get().postExecute(target);
+            });
+        });
+    }
+
+    interface TargetCallback{
+        void postExecute(SavingTarget target);
     }
 }
 
@@ -128,6 +180,10 @@ class AddPresetData {
                 appDatabase.appDao().insertCategory(new Category("Bonus", false));
                 appDatabase.appDao().insertWallet(new Wallet("Wallet1", 0));
                 appDatabase.appDao().insertWallet(new Wallet("Wallet2", 0));
+                Calendar cal = Calendar.getInstance();
+                cal.set(2021, 11 ,25);
+                appDatabase.appDao().insertTarget(new SavingTarget(50000d, new Date(),cal.getTime()));
+
             }
 
             handler.post(()->{

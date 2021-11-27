@@ -49,7 +49,7 @@
                 android:id="@+id/ed_targetamount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:ems="10"
                 android:inputType="textPersonName|numberDecimal" />
         </LinearLayout>
@@ -67,13 +67,13 @@
                 android:text="Tenggat:"
                 android:textSize="24sp" />
 
-            <EditText
-                android:id="@+id/ed_targetdate"
+            <Button
+                android:id="@+id/ed_btndatetime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="date" />
+                android:layout_weight="1.5"
+                android:text="Button"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </LinearLayout>
@@ -84,6 +84,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/OurRed"
         android:text="Tambah Target"
+        android:textSize="24sp"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
