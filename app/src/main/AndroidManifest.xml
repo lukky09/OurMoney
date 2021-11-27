@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ourmoney"
         android:supportsRtl="true"
         android:theme="@style/Theme.OurMoney">
-
+        <activity
+            android:name=".Activities.NameRequestActivity"
+            android:exported="true" />
         <activity
             android:name=".Activities.AddTargetActivity"
             android:exported="true" />
@@ -27,16 +29,13 @@
             android:exported="true" />
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".Activities.SplashActivity"
             android:exported="true"
             android:theme="@style/splashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

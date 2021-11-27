@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.077">
 
         <TextView
-            android:id="@+id/tvsaldo"
+            android:id="@+id/tvnamauser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nama User"
@@ -29,7 +29,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/tvnamauser"
+            android:id="@+id/tvasaldo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Saldo Anda:"

@@ -1,6 +1,7 @@
 package com.example.ourmoney.Fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ourmoney.Activities.CategoryAndWalletActivity;
-import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
 
@@ -25,7 +24,7 @@ public class ProfileFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
 
-    TextView jumduit;
+    TextView jumduit,user;
     Button setting, kategori, wallet, expor;
     ArrayList<Wallet> daftarwalletfrag;
 
@@ -60,7 +59,12 @@ public class ProfileFragment extends Fragment {
         kategori = v.findViewById(R.id.btnKategori);
         wallet = v.findViewById(R.id.btnWallet);
         expor = v.findViewById(R.id.btnEkspor);
-        jumduit = v.findViewById(R.id.tvnamauser);
+        jumduit = v.findViewById(R.id.tvasaldo);
+        user = v.findViewById(R.id.tvnamauser);
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("setting",getActivity().MODE_PRIVATE);
+        user.setText("Nama User: "+sharedPref.getString("name","no"));
+
 
         kategori.setOnClickListener(new View.OnClickListener() {
             @Override
