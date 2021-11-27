@@ -76,7 +76,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             else{
                 binding.tvTransactionAmount.setTextColor(Color.parseColor("#228b22"));
             }
-            binding.tvTransactionAmount.setText("Rp. "+transaction.transaction.getTransaction_amount());
+            String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat(transaction.transaction.getTransaction_amount()+""));
+            binding.tvTransactionAmount.setText(displayBalance);
 
             String note = transaction.transaction.getTransaction_note().isEmpty() ? "" : transaction.transaction.getTransaction_note();
             binding.tvTransactionNote.setText(note);

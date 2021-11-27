@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.ourmoney.Activities.AddTransactionActivity;
+import com.example.ourmoney.Activities.DetailActivity;
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Adapter.TransactionAdapter;
 import com.example.ourmoney.Models.Category;
@@ -105,7 +106,7 @@ public class HomeFragment extends Fragment {
         }).execute();
     }
 
-    ActivityResultLauncher<Intent> addTransRL = registerForActivityResult(
+    ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -122,7 +123,7 @@ public class HomeFragment extends Fragment {
         int viewID = view.getId();
         if (viewID == R.id.fabAddTransaction){
             Intent moveData = new Intent(getActivity(), AddTransactionActivity.class);
-            addTransRL.launch(moveData);
+            resultLauncher.launch(moveData);
         }
     }
 
@@ -137,9 +138,9 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickCallback(new TransactionAdapter.OnItemClickCallback() {
             @Override
             public void onItemClicked(TransactionWithRelation transaction) {
-                System.out.println(transaction.transaction.getTransaction_id()
-                        +" - "+transaction.category.getCategoryName()
-                        +" - "+transaction.wallet.getWalletName());
+                Intent moveData = new Intent(getActivity(), DetailActivity.class);
+                moveData.putExtra("transaction", transaction);
+                resultLauncher.launch(moveData);
             }
         });
         binding.rvHome.setAdapter(adapter);

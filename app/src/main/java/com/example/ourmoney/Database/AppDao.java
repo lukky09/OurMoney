@@ -81,6 +81,6 @@ public interface AppDao {
 
     //DAO RELATIONSHIP --------------------------------------------------------
     @Transaction
-    @Query("SELECT * FROM transactions")
+    @Query("SELECT * FROM transactions order by transaction_date desc")
     List<TransactionWithRelation> getAllTransactions();
 }

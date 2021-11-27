@@ -10,7 +10,9 @@ import com.example.ourmoney.Activities.AddTransactionActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity(tableName = "transactions")
 public class MoneyTransaction implements Parcelable {
@@ -93,6 +95,10 @@ public class MoneyTransaction implements Parcelable {
 
     public Date getTransaction_date() {
         return transaction_date;
+    }
+
+    public String getTransaction_date_formatted(){
+        return new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(this.transaction_date);
     }
 
     public void setTransaction_date(Date transaction_date) {
