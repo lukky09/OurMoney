@@ -85,6 +85,9 @@ public class SavingCashFragment extends Fragment {
                 if(result.getResultCode() == 110){
                     Intent results = result.getData();
                     target = results.getParcelableExtra("Target");
+                    MainActivity parent = (MainActivity) getActivity();
+                    parent.setCurrentTarget(target);
+//                    parent.setNavbarSelect(1);
                 }
             }
         });

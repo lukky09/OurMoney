@@ -21,4 +21,11 @@
         <item>Dompet Utama</item>
         <item>Dompet Cadangan</item>
     </string-array>
+    <string-array name="reportOptions">
+        <item>This week</item>
+        <item>This month</item>
+        <item>Three months</item>
+        <item>Six months</item>
+        <item>This year</item>
+    </string-array>
 </resources>

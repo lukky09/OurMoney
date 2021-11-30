@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Wallet> daftarwallet;
     ArrayList<Category> daftarkategori;
-    SavingTarget currentTarget;
-    BottomNavigationView navbar;
+    private SavingTarget currentTarget;
+    private BottomNavigationView navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
         navbar = findViewById(R.id.bottomNavigationView);
 
-        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                getData();
-            }
-        });
+//        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+//            @Override
+//            public void onActivityResult(ActivityResult result) {
+//                getData();
+//            }
+//        });
+
 
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 Fragment welcomeFragment;
                 welcomeFragment = HomeFragment.newInstance(daftarwallet);
                 getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
+                navbar.setSelectedItemId(R.id.homeFragment);
             }
         }).execute();
         new GetTarget(this, new GetTarget.TargetCallback() {
@@ -123,6 +125,27 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         getData();
     }
+
+    public SavingTarget getCurrentTarget() {
+        return currentTarget;
+    }
+
+    public void setCurrentTarget(SavingTarget currentTarget) {
+        this.currentTarget = currentTarget;
+    }
+
+//    public void setNavbarSelect(int i){
+//        switch (i){
+//            case 0:
+//                navbar.setSelectedItemId(R.id.homeFragment);
+//            case 1:
+//                navbar.setSelectedItemId(R.id.manageFragment);
+//            case 2:
+//                navbar.setSelectedItemId(R.id.reportFragment);
+//            default:
+//                navbar.setSelectedItemId(R.id.userFragment);
+//        }
+//    }
 }
 
 class GetTarget{
