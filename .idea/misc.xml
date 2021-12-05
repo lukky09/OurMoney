@@ -18,14 +18,18 @@
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_add_target.xml" value="0.4" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_add_transaction.xml" value="0.22871376811594202" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_category_and_wallet.xml" value="0.24954710144927536" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_detail.xml" value="0.22146739130434784" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_main.xml" value="0.48946840521564694" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_report.xml" value="0.24954710144927536" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/activity_splash.xml" value="0.13020833333333334" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/app_splash.xml" value="0.22871376811594202" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/chart_pie.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_add_transaction.xml" value="0.4" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_home_transaction.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_report.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/layout/fragment_saving_cash.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/menu/additem.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/ProyekSDP/OurMoney/app/src/main/res/mipmap-anydpi-v26/ourmoney_round.xml" value="0.2703125" />
         <entry key="..\:/Users/gamel/Desktop/OurMoney/OurMoney/app/src/main/res/drawable/ic_add_circle.xml" value="0.3828125" />

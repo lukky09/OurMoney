@@ -7,8 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.github.mikephil.*;
 
 import com.example.ourmoney.R;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,6 +62,9 @@ public class ReportFragment extends Fragment {
         }
     }
 
+    PieChart piechart;
+    BarChart barchart;
+    Button btnConfirm;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
