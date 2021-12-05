@@ -1,5 +1,6 @@
 package com.example.ourmoney.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.ourmoney.Database.AppDatabase;
@@ -102,6 +104,14 @@ public class DetailActivity extends AppCompatActivity {
                 finish();
             }
         }).execute();
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            setResult(10);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 
