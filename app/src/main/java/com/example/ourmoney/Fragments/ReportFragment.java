@@ -1,16 +1,25 @@
 package com.example.ourmoney.Fragments;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.ourmoney.Database.AppDatabase;
+import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.TransactionWithRelation;
+import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.databinding.FragmentHomeTransactionBinding;
 import com.example.ourmoney.databinding.FragmentReportBinding;
 import com.github.mikephil.*;
@@ -21,48 +30,27 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ReportFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ReportFragment extends Fragment {
 
     BarChart barchart;
-    Button btnConfirm;
     ArrayList<PieEntry> entries = new ArrayList<>();
     FragmentReportBinding binding;
+    ArrayList<TransactionWithRelation> trans;
+    ArrayList<Category> cats;
+    Random r = new Random();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ReportFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ReportFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ReportFragment newInstance(String param1, String param2) {
+    public static ReportFragment newInstance() {
         ReportFragment fragment = new ReportFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,8 +59,6 @@ public class ReportFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -88,17 +74,77 @@ public class ReportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        setdata();
     }
 
-    void setdata(){
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        for (int i = 0; i < 5 ; i++) {
-            //entries.add(new PieEntry());
-        }
-        PieDataSet dataSet = new PieDataSet(entries, "Seluruh Transaksi");
-        PieData data = new PieData(dataSet);
-        binding.pie.setData(data);
-        binding.pie.invalidate();
+    void setdata() {
+        new GetTransactionAndCategories(getContext(), new GetTransactionAndCategories.GetTransactionAndCategoriesCallback() {
+            @Override
+            public void postExecute(List<Category> c, List<TransactionWithRelation> t) {
+                cats = new ArrayList<>();
+                cats.addAll(c);
+                trans = new ArrayList<>();
+                trans.addAll(t);
+                ArrayList<PieEntry> entries = new ArrayList<>();
+                ArrayList<Float> jumlah = new ArrayList<>();
+                ArrayList<Integer> colors = new ArrayList<>();
+                for (int i = 0; i < cats.size(); i++) {
+                    jumlah.add((float) 0);
+                }
+                for (int i = 0; i < trans.size(); i++) {
+                    for (int j = 0; j < cats.size(); j++) {
+                        if (trans.get(i).category.getCategoryId() == cats.get(j).getCategoryId()) {
+                            jumlah.set(j, Math.abs(trans.get(i).transaction.getTransaction_amount()) + jumlah.get(j));
+                            break;
+                        }
+                    }
+                    jumlah.add((float) 0);
+                }
+                for (int i = 0; i < cats.size(); i++) {
+                    if (jumlah.get(i) > 0) {
+                        entries.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
+                        colors.add(Color.rgb(255 - r.nextInt(70), r.nextInt(70), r.nextInt(70)));
+                    }
+                }
+                PieDataSet dataSet = new PieDataSet(entries, "Seluruh Transaksi");
+                dataSet.setColors(colors);
+                PieData data = new PieData(dataSet);
+                binding.pie.setData(data);
+
+                binding.pie.highlightValues(null);
+                binding.pie.invalidate();
+            }
+        }).execute();
+    }
+}
+
+class GetTransactionAndCategories {
+    private final WeakReference<Context> weakContext;
+    private final WeakReference<GetTransactionAndCategoriesCallback> weakCallback;
+
+    public GetTransactionAndCategories( Context context, GetTransactionAndCategoriesCallback callback){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+    }
+
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            List<Category> cat = appDatabase.appDao().getallCategories();
+            List<TransactionWithRelation> tra = appDatabase.appDao().getAllTransactions();
+
+            handler.post(()->{
+                weakCallback.get().postExecute(cat,tra);
+            });
+        });
+    }
+
+    interface GetTransactionAndCategoriesCallback{
+        void postExecute(List<Category> c, List<TransactionWithRelation> t);
     }
 }

@@ -23,6 +23,7 @@ import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Fragments.AddTransactionFragment;
 import com.example.ourmoney.Fragments.HomeFragment;
 import com.example.ourmoney.Fragments.ProfileFragment;
+import com.example.ourmoney.Fragments.ReportFragment;
 import com.example.ourmoney.Fragments.SavingCashFragment;
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
@@ -80,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.reportFragment:
-                        Toast.makeText(MainActivity.this, "Reporto", Toast.LENGTH_SHORT).show();
+                        frag = ReportFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                     case R.id.userFragment:
                         frag = ProfileFragment.newInstance(daftarwallet);
