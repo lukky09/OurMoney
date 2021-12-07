@@ -18,6 +18,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.example.ourmoney.Activities.AddTransactionActivity;
@@ -54,6 +55,7 @@ public class HomeFragment extends Fragment {
 
     FragmentHomeTransactionBinding binding;
 
+    private int oldScrollYPostion = 0;
 
     public static HomeFragment newInstance(ArrayList<Wallet> w ){
         HomeFragment fragment = new HomeFragment();
@@ -104,6 +106,18 @@ public class HomeFragment extends Fragment {
                 setupRV(transactionList);
             }
         }).execute();
+
+        binding.scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (binding.scrollView.getScrollY() > oldScrollYPostion) {
+                    binding.fabAddTransaction.hide();
+                } else if (binding.scrollView.getScrollY() < oldScrollYPostion || binding.scrollView.getScrollY() <= 0) {
+                    binding.fabAddTransaction.show();
+                }
+                oldScrollYPostion = binding.scrollView.getScrollY();
+            }
+        });
     }
 
     ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
