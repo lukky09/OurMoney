@@ -46,7 +46,6 @@ public class ReportFragment extends Fragment {
     FragmentReportBinding binding;
     ArrayList<TransactionWithRelation> trans;
     ArrayList<Category> cats;
-    Random r = new Random();
 
     public static ReportFragment newInstance() {
         ReportFragment fragment = new ReportFragment();
@@ -86,8 +85,10 @@ public class ReportFragment extends Fragment {
                 trans = new ArrayList<>();
                 trans.addAll(t);
                 ArrayList<PieEntry> entries = new ArrayList<>();
+                ArrayList<PieEntry> entries2 = new ArrayList<>();
                 ArrayList<Float> jumlah = new ArrayList<>();
-                ArrayList<Integer> colors = new ArrayList<>();
+                ArrayList<Integer> colors1 = new ArrayList<>();
+                ArrayList<Integer> colors2 = new ArrayList<>();
                 for (int i = 0; i < cats.size(); i++) {
                     jumlah.add((float) 0);
                 }
@@ -102,17 +103,29 @@ public class ReportFragment extends Fragment {
                 }
                 for (int i = 0; i < cats.size(); i++) {
                     if (jumlah.get(i) > 0) {
-                        entries.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
-                        colors.add(Color.rgb(255 - r.nextInt(70), r.nextInt(70), r.nextInt(70)));
+                        if(cats.get(i).isPengeluaran()) {
+                            entries.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
+                            colors1.add(Color.rgb(220 + colors1.size() * 5, 20 + colors1.size() * 30, 20 + colors1.size() * 35));
+                        }else{
+                            entries2.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
+                            colors2.add(Color.rgb(0 + colors2.size() * 30, 0 + colors2.size() * 30, 255));
+                        }
                     }
                 }
-                PieDataSet dataSet = new PieDataSet(entries, "Seluruh Transaksi");
-                dataSet.setColors(colors);
+                PieDataSet dataSet = new PieDataSet(entries, "Pengeluaran");
+                PieDataSet dataSet2 = new PieDataSet(entries, "Pengeluaran");
+                dataSet.setColors(colors1);
+                dataSet2.setColors(colors2);
                 PieData data = new PieData(dataSet);
-                binding.pie.setData(data);
-
-                binding.pie.highlightValues(null);
-                binding.pie.invalidate();
+                data.setValueTextColor(Color.WHITE);
+                PieData data2 = new PieData(dataSet2);
+                data2.setValueTextColor(Color.WHITE);
+                binding.pie1.setData(data);
+                binding.pie1.highlightValues(null);
+                binding.pie1.invalidate();
+                binding.pie2.setData(data2);
+                binding.pie2.highlightValues(null);
+                binding.pie2.invalidate();
             }
         }).execute();
     }

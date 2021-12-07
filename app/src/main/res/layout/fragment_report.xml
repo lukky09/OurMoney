@@ -46,17 +46,27 @@
             android:text="Show" />
     </LinearLayout>
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pie"
+    <LinearLayout
+        android:id="@+id/linearLayout8"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
-        app:layout_constraintVertical_bias="0.044">
+        app:layout_constraintVertical_bias="0.100000024"
+        tools:layout_editor_absoluteX="1dp">
 
-    </com.github.mikephil.charting.charts.PieChart>
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie1"
+            android:layout_width="0dp"
+            android:layout_height="225dp"
+            android:layout_weight="1"></com.github.mikephil.charting.charts.PieChart>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie2"
+            android:layout_width="0dp"
+            android:layout_height="225dp"
+            android:layout_weight="1"></com.github.mikephil.charting.charts.PieChart>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
