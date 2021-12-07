@@ -47,6 +47,7 @@
     </LinearLayout>
 
     <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

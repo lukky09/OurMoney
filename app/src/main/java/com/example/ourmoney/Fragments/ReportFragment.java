@@ -2,6 +2,8 @@ package com.example.ourmoney.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,11 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.ourmoney.databinding.FragmentHomeTransactionBinding;
+import com.example.ourmoney.databinding.FragmentReportBinding;
 import com.github.mikephil.*;
 
 import com.example.ourmoney.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +30,11 @@ import com.github.mikephil.charting.charts.PieChart;
  * create an instance of this fragment.
  */
 public class ReportFragment extends Fragment {
+
+    BarChart barchart;
+    Button btnConfirm;
+    ArrayList<PieEntry> entries = new ArrayList<>();
+    FragmentReportBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,13 +76,29 @@ public class ReportFragment extends Fragment {
         }
     }
 
-    PieChart piechart;
-    BarChart barchart;
-    Button btnConfirm;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report, container, false);
+        binding = FragmentReportBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    void setdata(){
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        for (int i = 0; i < 5 ; i++) {
+            //entries.add(new PieEntry());
+        }
+        PieDataSet dataSet = new PieDataSet(entries, "Seluruh Transaksi");
+        PieData data = new PieData(dataSet);
+        binding.pie.setData(data);
+        binding.pie.invalidate();
     }
 }
