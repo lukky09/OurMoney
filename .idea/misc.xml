@@ -52,10 +52,13 @@
         <entry key="..\:/Users/gamel/Desktop/OurMoney/OurMoney/app/src/main/res/menu/additem.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/gamel/Desktop/OurMoney/OurMoney/app/src/main/res/menu/addwallet.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/gamel/Desktop/OurMoney/OurMoney/app/src/main/res/menu/bottom_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2866666666666667" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/drawable/ic_baseline_account_balance_24.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/drawable/ic_baseline_event_note_24.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/drawable/ic_home.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2866666666666667" />
+        <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/layout/activity_add_target.xml" value="0.275" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/layout/activity_add_transaction.xml" value="0.264" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/layout/activity_category_and_wallet.xml" value="0.275" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/layout/activity_detail.xml" value="0.264" />
@@ -65,6 +68,8 @@
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/layout/fragment_home_transaction.xml" value="0.264" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/layout/rv_item_home.xml" value="0.275" />
         <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/menu/bottom_menu.xml" value="0.275" />
+        <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2866666666666667" />
+        <entry key="..\:/Users/steve/AndroidStudioProjects/OurMoney/app/src/main/res/mipmap-anydpi-v26/ourmoney.xml" value="0.2866666666666667" />
         <entry key="..\:/androprojects/OurMoney/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
       </map>
     </option>

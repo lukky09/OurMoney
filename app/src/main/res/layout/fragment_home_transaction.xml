@@ -27,9 +27,9 @@
                 android:layout_alignParentTop="true"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left"
-                android:text="Selamat datang, User"
+                android:text="Selamat datang, "
                 android:textColor="?attr/colorSecondary"
-                android:textSize="34sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
             <TextView

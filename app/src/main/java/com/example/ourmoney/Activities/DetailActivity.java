@@ -1,5 +1,9 @@
 package com.example.ourmoney.Activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
@@ -81,7 +86,10 @@ public class DetailActivity extends AppCompatActivity {
     private void onClick(View view){
         int viewId = view.getId();
         if (viewId == R.id.btnEditTransaction){
-            // besok tak lanjut
+            Intent intent = new Intent(this, AddTransactionActivity.class);
+            intent.putExtra("isEdit", true);
+            intent.putExtra("transaction", transaction);
+            resultLauncher.launch(intent);
         }
         else if (viewId == R.id.btnDeleteTransaction){
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(DetailActivity.this);
@@ -93,6 +101,22 @@ public class DetailActivity extends AppCompatActivity {
             builder.show();
         }
     }
+
+    ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 100){
+                        Intent intent = new Intent();
+                        String data = result.getData().getStringExtra("msg");
+                        intent.putExtra("msg", data);
+                        setResult(100, intent);
+                        finish();
+                    }
+                }
+            }
+    );
 
     private void deleteTransaction(){
         new DeleteTransactionAsync(transaction.transaction, this, new DeleteTransactionAsync.deleteTransactionCallback() {
@@ -135,6 +159,11 @@ class DeleteTransactionAsync {
             AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
 
             appDatabase.appDao().deleteTransaction(transaction);
+
+            // update isi wallet
+            Wallet wallet = appDatabase.appDao().getWalletbyID(transaction.getWallet_id()).get(0);
+            wallet.setWalletAmount(wallet.getWalletAmount() + transaction.getTransaction_amount());
+            appDatabase.appDao().updateWallet(wallet);
 
             handler.post(()->{
                 weakCallback.get().postExecute("Transaksi Berhasil Dihapus");

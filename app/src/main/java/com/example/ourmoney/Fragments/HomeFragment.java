@@ -2,6 +2,7 @@ package com.example.ourmoney.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -86,6 +87,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("setting", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("name", "user");
+        binding.lblOurMoney.append(username);
+
         int totalBalance = 0;
         for (int i = 0; i < daftarwallet.size(); i++) {
             totalBalance+=daftarwallet.get(i).getWalletAmount();
@@ -137,6 +142,7 @@ public class HomeFragment extends Fragment {
         int viewID = view.getId();
         if (viewID == R.id.fabAddTransaction){
             Intent moveData = new Intent(getActivity(), AddTransactionActivity.class);
+            moveData.putExtra("isEdit", false);
             resultLauncher.launch(moveData);
         }
     }
