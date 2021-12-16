@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "category")
-public class Category implements Parcelable {
+public class Category implements Parcelable, Serializable {
     @PrimaryKey(autoGenerate = true)
     private int categoryId;
     private String categoryName;

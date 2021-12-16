@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                     case R.id.userFragment:
-                        frag = ProfileFragment.newInstance(daftarwallet);
+                        frag = ProfileFragment.newInstance(daftarwallet, daftarkategori, currentTarget);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
                         break;
                 }

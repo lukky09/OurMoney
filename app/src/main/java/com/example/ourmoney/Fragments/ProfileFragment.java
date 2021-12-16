@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ourmoney.Activities.CategoryAndWalletActivity;
+import com.example.ourmoney.Activities.StoreDataActivity;
+import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
 
@@ -23,16 +27,22 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
 
     TextView jumduit,user;
     Button setting, kategori, wallet, expor;
     ArrayList<Wallet> daftarwalletfrag;
+    ArrayList<Category> daftarkategori;
+    private SavingTarget currentTarget;
 
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(ArrayList<Wallet> w) {
+    public static ProfileFragment newInstance(ArrayList<Wallet> w, ArrayList<Category> c, SavingTarget s) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_PARAM1, w);
+        args.putParcelableArrayList(ARG_PARAM2, c);
+        args.putParcelable(ARG_PARAM3, s);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,6 +52,8 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             daftarwalletfrag = getArguments().getParcelableArrayList(ARG_PARAM1);
+            daftarkategori = getArguments().getParcelableArrayList(ARG_PARAM2);
+            currentTarget = getArguments().getParcelable(ARG_PARAM3);
         }
     }
 
@@ -80,6 +92,17 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CategoryAndWalletActivity.class);
                 i.putExtra("isCategory",false);
+                startActivityForResult(i,69);
+            }
+        });
+
+        expor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), StoreDataActivity.class);
+                i.putExtra("savingtarget", (Parcelable) currentTarget);
+                i.putExtra("daftarwallet", daftarwalletfrag);
+                i.putExtra("daftarkategori", daftarkategori);
                 startActivityForResult(i,69);
             }
         });

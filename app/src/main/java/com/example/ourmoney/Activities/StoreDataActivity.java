@@ -1,0 +1,81 @@
+package com.example.ourmoney.Activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.SavingTarget;
+import com.example.ourmoney.Models.Wallet;
+import com.example.ourmoney.databinding.ActivityStoreDataBinding;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
+public class StoreDataActivity extends AppCompatActivity {
+
+    ActivityStoreDataBinding binding;
+
+    //models to be stored
+    ArrayList<Wallet> daftarwallet;
+    ArrayList<Category> daftarkategori;
+    private SavingTarget currentTarget;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityStoreDataBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        Intent par = getIntent();
+        if(par.hasExtra("daftarwallet") && par.hasExtra("daftarkategori") && par.hasExtra("savingtarget")){
+            daftarwallet = par.getParcelableArrayListExtra("daftarwallet");
+            daftarkategori = par.getParcelableArrayListExtra("daftarkategori");
+            currentTarget = par.getParcelableExtra("savingtarget");
+
+            System.out.println("Wallets : "+daftarwallet.size());
+            System.out.println("Categories : "+daftarkategori.size());
+            System.out.println("Current target : "+currentTarget.toString());
+        }else{
+            System.out.println("extra failed");
+        }
+
+        binding.btnDosave.setOnClickListener(this::doWriteSerialize);
+
+
+    }
+
+    public void doWriteSerialize(View view){
+        String pathToOurMoneyFolder = getExternalFilesDir(null).getAbsolutePath();
+        String fileName = pathToOurMoneyFolder + File.separator +"saveourmoney.txt";
+//        String fileName = "lala/saveourmoney.txt";
+        FileOutputStream fos = null;
+        try {
+//            fos = getApplicationContext().openFileOutput();
+            fos = new FileOutputStream(fileName);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(currentTarget);
+            os.writeObject(daftarwallet);
+            os.writeObject(daftarkategori);
+            os.close();
+            fos.close();
+            Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
+            System.out.println("Save data success!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Save data fail!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Save data fail!");
+        }
+
+    }
+}

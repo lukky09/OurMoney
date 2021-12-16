@@ -6,10 +6,11 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "savingtarget")
-public class SavingTarget implements Parcelable {
+public class SavingTarget implements Parcelable, Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private Double targetAmount;

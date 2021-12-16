@@ -6,10 +6,11 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity(tableName = "wallets")
-public class Wallet implements Parcelable {
+public class Wallet implements Parcelable, Serializable {
     @PrimaryKey(autoGenerate = true)
     private int wallet_id;
     private String walletName;

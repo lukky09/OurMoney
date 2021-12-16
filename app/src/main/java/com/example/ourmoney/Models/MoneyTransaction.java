@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 
 import com.example.ourmoney.Activities.AddTransactionActivity;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,7 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @Entity(tableName = "transactions")
-public class MoneyTransaction implements Parcelable {
+public class MoneyTransaction implements Parcelable, Serializable {
     @PrimaryKey(autoGenerate = true)
     private int transaction_id;
     private int wallet_id;

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Toast;
 
@@ -77,7 +78,7 @@ public class AddTargetActivity extends AppCompatActivity {
                 }
             }).execute();
             Intent back = new Intent();
-            back.putExtra("Target", newTarget);
+            back.putExtra("Target", (Parcelable) newTarget);
             setResult(110, back);
             finish();
         }else{
