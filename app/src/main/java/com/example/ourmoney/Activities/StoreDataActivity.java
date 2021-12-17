@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -49,6 +50,7 @@ public class StoreDataActivity extends AppCompatActivity {
         }
 
         binding.btnDosave.setOnClickListener(this::doWriteSerialize);
+        binding.btnDoload.setOnClickListener(this::doReadSerialize);
 
 
     }
@@ -75,6 +77,33 @@ public class StoreDataActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Save data fail!");
+        }
+
+    }
+
+    public void doReadSerialize(View view){
+        String pathToOurMoneyFolder = getExternalFilesDir(null).getAbsolutePath();
+        String fileName = pathToOurMoneyFolder + File.separator +"saveourmoney.txt";
+//        String fileName = "lala/saveourmoney.txt";
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(fileName);
+            ObjectInputStream is = new ObjectInputStream(fis);
+//            SimpleClass simpleClass = (SimpleClass) is.readObject();
+            currentTarget = (SavingTarget) is.readObject();
+            daftarwallet = (ArrayList<Wallet>) is.readObject();
+            daftarkategori = (ArrayList<Category>) is.readObject();
+            System.out.println("Wallets : "+daftarwallet.size());
+            System.out.println("Categories : "+daftarkategori.size());
+            System.out.println("Current target : "+currentTarget.toString());
+            is.close();
+            fis.close();
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
     }

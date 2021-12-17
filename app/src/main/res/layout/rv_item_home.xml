@@ -36,11 +36,11 @@
         android:id="@+id/tvCategoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kategori"
-        android:textSize="18sp"
-        android:textColor="@color/black"
+        android:layout_toStartOf="@id/tvTransactionAmount"
         android:layout_toEndOf="@+id/tvDate"
-        android:layout_toStartOf="@id/tvTransactionAmount"/>
+        android:text="Kategori"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvTransactionNote"
