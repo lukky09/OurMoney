@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.Models.Wallet;
@@ -20,7 +23,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StoreDataActivity extends AppCompatActivity {
 
@@ -106,5 +112,48 @@ public class StoreDataActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+}
+
+class SaveDatabaseAsync{
+    private final WeakReference<Context> weakContext;
+    private final WeakReference<SaveDatabaseCallback> weakCallback;
+    private ArrayList<Wallet> daftarwallet;
+    private ArrayList<Category> daftarkategori;
+    private SavingTarget currentTarget;
+    public SaveDatabaseAsync(ArrayList<Wallet> daftarWallet, ArrayList<Category> daftarkategori, SavingTarget currentTarget, Context context, SaveDatabaseCallback callback){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+        this.daftarwallet = daftarWallet;
+        this.daftarkategori = daftarkategori;
+        this. currentTarget = currentTarget;
+    }
+
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        weakCallback.get().preExecute();
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            //save to DAO here
+
+
+            handler.post(()->{
+                weakCallback.get().postExecute("Transaksi Ditambahkan");
+            });
+        });
+    }
+
+
+
+
+
+
+    interface SaveDatabaseCallback{
+        void preExecute();
+        void postExecute(String message);
     }
 }
