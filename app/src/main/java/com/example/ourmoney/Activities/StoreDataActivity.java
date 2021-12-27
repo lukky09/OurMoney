@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.ourmoney.Database.AppDatabase;
+import com.example.ourmoney.Fragments.getTransactionAsync;
 import com.example.ourmoney.Models.Category;
+import com.example.ourmoney.Models.MoneyTransaction;
 import com.example.ourmoney.Models.SavingTarget;
+import com.example.ourmoney.Models.TransactionWithRelation;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.databinding.ActivityStoreDataBinding;
 
@@ -25,6 +28,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -35,6 +39,7 @@ public class StoreDataActivity extends AppCompatActivity {
     //models to be stored
     ArrayList<Wallet> daftarwallet;
     ArrayList<Category> daftarkategori;
+    ArrayList<MoneyTransaction> daftartrans;
     private SavingTarget currentTarget;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,21 @@ public class StoreDataActivity extends AppCompatActivity {
             daftarwallet = par.getParcelableArrayListExtra("daftarwallet");
             daftarkategori = par.getParcelableArrayListExtra("daftarkategori");
             currentTarget = par.getParcelableExtra("savingtarget");
+
+            new getTransactionAsync(this, new getTransactionAsync.getTransactionCallback() {
+                @Override
+                public void preExecute() {
+
+                }
+
+                @Override
+                public void postExecute(List<TransactionWithRelation> transactionList) {
+                    daftartrans = new ArrayList<MoneyTransaction>();
+                    for (int i = 0; i < transactionList.size(); i++) {
+                        daftartrans.add(transactionList.get(i).transaction);
+                    }
+                }
+            }).execute();
 
             System.out.println("Wallets : "+daftarwallet.size());
             System.out.println("Categories : "+daftarkategori.size());
@@ -73,6 +93,7 @@ public class StoreDataActivity extends AppCompatActivity {
             os.writeObject(currentTarget);
             os.writeObject(daftarwallet);
             os.writeObject(daftarkategori);
+            os.writeObject(daftartrans);
             os.close();
             fos.close();
             Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
@@ -99,9 +120,17 @@ public class StoreDataActivity extends AppCompatActivity {
             currentTarget = (SavingTarget) is.readObject();
             daftarwallet = (ArrayList<Wallet>) is.readObject();
             daftarkategori = (ArrayList<Category>) is.readObject();
+            daftartrans = (ArrayList<MoneyTransaction>) is.readObject();
             System.out.println("Wallets : "+daftarwallet.size());
             System.out.println("Categories : "+daftarkategori.size());
             System.out.println("Current target : "+currentTarget.toString());
+            System.out.println("Trans : "+daftartrans.toString());
+            new SaveDatabaseAsync(daftarwallet, daftarkategori, daftartrans, currentTarget, getApplicationContext(), new SaveDatabaseAsync.SaveDatabaseCallback() {
+                @Override
+                public void postExecute(String message) {
+                    Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
+                }
+            }).execute();
             is.close();
             fis.close();
         }catch (FileNotFoundException e) {
@@ -118,14 +147,19 @@ public class StoreDataActivity extends AppCompatActivity {
 class SaveDatabaseAsync{
     private final WeakReference<Context> weakContext;
     private final WeakReference<SaveDatabaseCallback> weakCallback;
-    private ArrayList<Wallet> daftarwallet;
-    private ArrayList<Category> daftarkategori;
+    private List<Wallet> daftarwallet;
+    private List<Category> daftarkategori;
+    private List<MoneyTransaction> daftartrans;
     private SavingTarget currentTarget;
-    public SaveDatabaseAsync(ArrayList<Wallet> daftarWallet, ArrayList<Category> daftarkategori, SavingTarget currentTarget, Context context, SaveDatabaseCallback callback){
+    public SaveDatabaseAsync(ArrayList<Wallet> daftarWallet, ArrayList<Category> daftarkategori,ArrayList<MoneyTransaction> daftartransaksi, SavingTarget currentTarget, Context context, SaveDatabaseCallback callback){
         this.weakContext = new WeakReference<>(context);
         this.weakCallback = new WeakReference<>(callback);
-        this.daftarwallet = daftarWallet;
-        this.daftarkategori = daftarkategori;
+        this.daftarwallet = new ArrayList<>();
+        this.daftarkategori = new ArrayList<>();
+        this.daftartrans = new ArrayList<>();
+        this.daftarwallet.addAll(daftarWallet);
+        this.daftarkategori.addAll(daftarkategori);
+        this.daftartrans.addAll(daftartransaksi);
         this. currentTarget = currentTarget;
     }
 
@@ -133,13 +167,17 @@ class SaveDatabaseAsync{
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        weakCallback.get().preExecute();
         executorService.execute(() -> {
             Context context = weakContext.get();
             AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
 
-            //save to DAO here
-
+            appDatabase.appDao().nukeCategory();
+            appDatabase.appDao().insertAllCategory(daftarkategori);
+            appDatabase.appDao().nukeWallet();
+            appDatabase.appDao().insertAllWallet(daftarwallet);
+            appDatabase.appDao().nukeTransaction();
+            appDatabase.appDao().insertAllTransaction(daftartrans);
+            appDatabase.appDao().updateTarget(currentTarget);
 
             handler.post(()->{
                 weakCallback.get().postExecute("Transaksi Ditambahkan");
@@ -147,13 +185,7 @@ class SaveDatabaseAsync{
         });
     }
 
-
-
-
-
-
     interface SaveDatabaseCallback{
-        void preExecute();
         void postExecute(String message);
     }
 }

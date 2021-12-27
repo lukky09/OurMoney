@@ -3,6 +3,7 @@ package com.example.ourmoney.Database;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
@@ -20,6 +21,12 @@ public interface AppDao {
 
     // DAO MONEY TRANSACTION ---------------------------------------------
 
+    @Query("DELETE FROM transactions")
+    void nukeTransaction();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllTransaction(List<MoneyTransaction> trans);
+
     @Insert
     void insertTransaction(MoneyTransaction transaction);
 
@@ -34,11 +41,17 @@ public interface AppDao {
     @Query("select * from category")
     List<Category> getallCategories();
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllCategory(List<Category> cats);
+
     @Query("select * from category where lower(categoryName)=lower(:name)")
     List<Category> getCategorybyName(String name);
 
     @Query("select * from category where categoryId=:id")
     List<Category> getCategorybyID(int id);
+
+    @Query("DELETE FROM category")
+    void nukeCategory();
 
     @Insert
     void insertCategory(Category category);
@@ -54,11 +67,17 @@ public interface AppDao {
     @Query("select * from wallets")
     List<Wallet> getallWallets();
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllWallet(List<Wallet> wals);
+
     @Query("select * from wallets where lower(walletName)=lower(:name)")
     List<Wallet> getWalletbyName(String name);
 
     @Query("select * from wallets where wallet_id=:id")
     List<Wallet> getWalletbyID(int id);
+
+    @Query("DELETE FROM wallets")
+    void nukeWallet();
 
     @Insert
     void insertWallet(Wallet wallet);
@@ -72,6 +91,9 @@ public interface AppDao {
     //DAO TARGET --------------------------------------------------------
     @Query("select * from savingtarget where id = 1")
     List<SavingTarget> getTarget();
+
+    @Query("DELETE FROM savingtarget")
+    void nukeTarget();
 
     @Insert
     void insertTarget(SavingTarget target);
