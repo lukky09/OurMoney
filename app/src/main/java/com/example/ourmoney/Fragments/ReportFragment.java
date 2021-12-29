@@ -14,6 +14,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -90,11 +91,15 @@ public class ReportFragment extends Fragment {
             }
         }).execute();
         currmonth = Integer.parseInt((String) DateFormat.format("MM", new Date()));
-        binding.button2.setOnClickListener(new View.OnClickListener() {
+        binding.spnPilihrentang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), currmonth + "", Toast.LENGTH_SHORT).show();
-                setdata(binding.spnPilihrentang.getSelectedItemPosition());
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                setdata(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
@@ -150,14 +155,17 @@ public class ReportFragment extends Fragment {
         data.setValueTextColor(Color.WHITE);
         PieData data2 = new PieData(dataSet2);
         data2.setValueTextColor(Color.WHITE);
+        binding.pie1.getDescription().setEnabled(false);
+        binding.pie2.getDescription().setEnabled(false);
+        binding.pie1.getLegend().setEnabled(false);
+        binding.pie1.getLegend().setEnabled(false);
         binding.pie1.setData(data);
         binding.pie1.highlightValues(null);
         binding.pie1.invalidate();
         binding.pie2.setData(data2);
         binding.pie2.highlightValues(null);
         binding.pie2.invalidate();
-        binding.pie1.getDescription().setEnabled(false);
-        binding.pie2.getDescription().setEnabled(false);
+
     }
 }
 
