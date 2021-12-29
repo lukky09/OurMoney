@@ -22,10 +22,10 @@
         <item>Dompet Cadangan</item>
     </string-array>
     <string-array name="reportOptions">
-        <item>This week</item>
-        <item>This month</item>
-        <item>Three months</item>
-        <item>Six months</item>
-        <item>This year</item>
+        <item>Sepanjang Waktu</item>
+        <item>Bulan Ini</item>
+        <item>Bulan Lalu</item>
+        <item>2 Bulan Lalu</item>
+        <item>3 Bulan Lalu</item>
     </string-array>
 </resources>

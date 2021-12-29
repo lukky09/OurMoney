@@ -10,10 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
@@ -34,6 +36,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -41,11 +44,12 @@ import java.util.concurrent.Executors;
 
 public class ReportFragment extends Fragment {
 
-    BarChart barchart;
-    ArrayList<PieEntry> entries = new ArrayList<>();
+    ArrayList<PieEntry> entries;
+    ArrayList<PieEntry> entries2;
     FragmentReportBinding binding;
     ArrayList<TransactionWithRelation> trans;
     ArrayList<Category> cats;
+    int currmonth;
 
     public static ReportFragment newInstance() {
         ReportFragment fragment = new ReportFragment();
@@ -73,10 +77,6 @@ public class ReportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setdata();
-    }
-
-    void setdata() {
         new GetTransactionAndCategories(getContext(), new GetTransactionAndCategories.GetTransactionAndCategoriesCallback() {
             @Override
             public void postExecute(List<Category> c, List<TransactionWithRelation> t) {
@@ -84,50 +84,80 @@ public class ReportFragment extends Fragment {
                 cats.addAll(c);
                 trans = new ArrayList<>();
                 trans.addAll(t);
-                ArrayList<PieEntry> entries = new ArrayList<>();
-                ArrayList<PieEntry> entries2 = new ArrayList<>();
-                ArrayList<Float> jumlah = new ArrayList<>();
-                ArrayList<Integer> colors1 = new ArrayList<>();
-                ArrayList<Integer> colors2 = new ArrayList<>();
-                for (int i = 0; i < cats.size(); i++) {
-                    jumlah.add((float) 0);
-                }
-                for (int i = 0; i < trans.size(); i++) {
-                    for (int j = 0; j < cats.size(); j++) {
-                        if (trans.get(i).category.getCategoryId() == cats.get(j).getCategoryId()) {
-                            jumlah.set(j, Math.abs(trans.get(i).transaction.getTransaction_amount()) + jumlah.get(j));
-                            break;
-                        }
-                    }
-                    jumlah.add((float) 0);
-                }
-                for (int i = 0; i < cats.size(); i++) {
-                    if (jumlah.get(i) > 0) {
-                        if(cats.get(i).isPengeluaran()) {
-                            entries.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
-                            colors1.add(Color.rgb(220 + colors1.size() * 5, 20 + colors1.size() * 30, 20 + colors1.size() * 35));
-                        }else{
-                            entries2.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
-                            colors2.add(Color.rgb(0 + colors2.size() * 30, 0 + colors2.size() * 30, 255));
-                        }
-                    }
-                }
-                PieDataSet dataSet = new PieDataSet(entries, "Pengeluaran");
-                PieDataSet dataSet2 = new PieDataSet(entries, "Pengeluaran");
-                dataSet.setColors(colors1);
-                dataSet2.setColors(colors2);
-                PieData data = new PieData(dataSet);
-                data.setValueTextColor(Color.WHITE);
-                PieData data2 = new PieData(dataSet2);
-                data2.setValueTextColor(Color.WHITE);
-                binding.pie1.setData(data);
-                binding.pie1.highlightValues(null);
-                binding.pie1.invalidate();
-                binding.pie2.setData(data2);
-                binding.pie2.highlightValues(null);
-                binding.pie2.invalidate();
+                entries = new ArrayList<>();
+                entries2 = new ArrayList<>();
+                setdata(0);
             }
         }).execute();
+        currmonth = Integer.parseInt((String) DateFormat.format("MM", new Date()));
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), currmonth + "", Toast.LENGTH_SHORT).show();
+                setdata(binding.spnPilihrentang.getSelectedItemPosition());
+            }
+        });
+    }
+
+    void setdata(int index) {
+        int tempmonth;
+        entries = new ArrayList<>();
+        entries2 = new ArrayList<>();
+        ArrayList<Float> jumlah = new ArrayList<>();
+        ArrayList<Integer> colors1 = new ArrayList<>();
+        ArrayList<Integer> colors2 = new ArrayList<>();
+        for (int i = 0; i < cats.size(); i++) {
+            jumlah.add((float) 0);
+        }
+        if (index == 0) {
+            for (int i = 0; i < trans.size(); i++) {
+                for (int j = 0; j < cats.size(); j++) {
+                    if (trans.get(i).category.getCategoryId() == cats.get(j).getCategoryId()) {
+                        jumlah.set(j, Math.abs(trans.get(i).transaction.getTransaction_amount()) + jumlah.get(j) + index);
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < trans.size(); i++) {
+                for (int j = 0; j < cats.size(); j++) {
+                    tempmonth = currmonth - index + 1;
+                    if (tempmonth < 0) tempmonth += 12;
+                    tempmonth = Integer.parseInt((String) DateFormat.format("MM", trans.get(i).transaction.getTransaction_date())) - tempmonth;
+                    if (trans.get(i).category.getCategoryId() == cats.get(j).getCategoryId() && tempmonth == 0) {
+                        jumlah.set(j, Math.abs(trans.get(i).transaction.getTransaction_amount()) + jumlah.get(j));
+                        break;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < cats.size(); i++) {
+            if (jumlah.get(i) > 0) {
+                if (cats.get(i).isPengeluaran()) {
+                    entries.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
+                    colors1.add(Color.rgb(220 + colors1.size() * 5, 20 + colors1.size() * 30, 20 + colors1.size() * 35));
+                } else {
+                    entries2.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
+                    colors2.add(Color.rgb(0 + colors2.size() * 30, 0 + colors2.size() * 30, 255));
+                }
+            }
+        }
+        PieDataSet dataSet = new PieDataSet(entries, "Pengeluaran");
+        PieDataSet dataSet2 = new PieDataSet(entries2, "Pemasukan");
+        dataSet.setColors(colors1);
+        dataSet2.setColors(colors2);
+        PieData data = new PieData(dataSet);
+        data.setValueTextColor(Color.WHITE);
+        PieData data2 = new PieData(dataSet2);
+        data2.setValueTextColor(Color.WHITE);
+        binding.pie1.setData(data);
+        binding.pie1.highlightValues(null);
+        binding.pie1.invalidate();
+        binding.pie2.setData(data2);
+        binding.pie2.highlightValues(null);
+        binding.pie2.invalidate();
+        binding.pie1.getDescription().setEnabled(false);
+        binding.pie2.getDescription().setEnabled(false);
     }
 }
 
