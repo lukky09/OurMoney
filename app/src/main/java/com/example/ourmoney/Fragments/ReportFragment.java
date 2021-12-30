@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -19,6 +20,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ourmoney.Database.AppDatabase;
+import com.example.ourmoney.Models.Adapter.ReportAdapter;
+import com.example.ourmoney.Models.Adapter.TransactionAdapter;
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
 import com.example.ourmoney.Models.TransactionWithRelation;
@@ -88,24 +91,26 @@ public class ReportFragment extends Fragment {
                 entries = new ArrayList<>();
                 entries2 = new ArrayList<>();
                 setdata(0);
+                binding.spnPilihrentang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        setdata(i);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
         }).execute();
         currmonth = Integer.parseInt((String) DateFormat.format("MM", new Date()));
-        binding.spnPilihrentang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setdata(i);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     void setdata(int index) {
-        int tempmonth;
+        int tempmonth, total;
+        total = 0;
         entries = new ArrayList<>();
         entries2 = new ArrayList<>();
         ArrayList<Float> jumlah = new ArrayList<>();
@@ -136,29 +141,51 @@ public class ReportFragment extends Fragment {
                 }
             }
         }
+        ReportAdapter adapter1 = new ReportAdapter(jumlah, cats, false);
+        binding.rvmasuk.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.rvmasuk.setAdapter(adapter1);
+        ReportAdapter adapter2 = new ReportAdapter(jumlah, cats, true);
+        binding.rvkeluar.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.rvkeluar.setAdapter(adapter2);
         for (int i = 0; i < cats.size(); i++) {
             if (jumlah.get(i) > 0) {
                 if (cats.get(i).isPengeluaran()) {
                     entries.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
+                    total -= jumlah.get(i);
                     colors1.add(Color.rgb(220 + colors1.size() * 5, 20 + colors1.size() * 30, 20 + colors1.size() * 35));
                 } else {
                     entries2.add(new PieEntry(jumlah.get(i), cats.get(i).getCategoryName()));
+                    total += jumlah.get(i);
                     colors2.add(Color.rgb(0 + colors2.size() * 30, 0 + colors2.size() * 30, 255));
                 }
             }
         }
-        PieDataSet dataSet = new PieDataSet(entries, "Pengeluaran");
-        PieDataSet dataSet2 = new PieDataSet(entries2, "Pemasukan");
+        if(total>=0){
+            String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat(total+""));
+            binding.tvtotalreport.setText("Untung keseluruhan : "+displayBalance);
+        }else{
+            total = total * -1;
+            String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat(total+""));
+            binding.tvtotalreport.setText("Rugi keseluruhan : "+displayBalance);
+        }
+
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        PieDataSet dataSet2 = new PieDataSet(entries2, "");
         dataSet.setColors(colors1);
         dataSet2.setColors(colors2);
+        dataSet.setValueFormatter(new PercentFormatter(binding.pie1));
+        dataSet2.setValueFormatter(new PercentFormatter(binding.pie2));
         PieData data = new PieData(dataSet);
         data.setValueTextColor(Color.WHITE);
         PieData data2 = new PieData(dataSet2);
         data2.setValueTextColor(Color.WHITE);
         binding.pie1.getDescription().setEnabled(false);
         binding.pie2.getDescription().setEnabled(false);
+        binding.pie1.setUsePercentValues(true);
+        binding.pie2.setUsePercentValues(true);
         binding.pie1.getLegend().setEnabled(false);
-        binding.pie1.getLegend().setEnabled(false);
+        binding.pie2.getLegend().setEnabled(false);
         binding.pie1.setData(data);
         binding.pie1.highlightValues(null);
         binding.pie1.invalidate();
