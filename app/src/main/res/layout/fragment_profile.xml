@@ -1,122 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
+    android:background="@color/whitesmoke"
     tools:context=".Fragments.ProfileFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.077">
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/tvnamauser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toStartOf="@+id/btnEditName"
             android:text="Nama User"
-            android:textColor="?attr/colorSecondary"
-            android:textSize="30sp" />
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvasaldo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Saldo Anda:"
+            android:layout_below="@+id/tvnamauser"
+            android:layout_toStartOf="@+id/btnEditName"
+            android:text="Saldo:"
             android:textColor="?attr/colorSecondary"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnEditName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:backgroundTint="@color/OurRed"
+            android:text="Ubah Nama"
+            android:layout_marginVertical="5dp"
+            app:cornerRadius="50dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvPengaturan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_margin="10dp"
+        android:text="Pengaturan"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPengaturan"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@color/white">
+
+<!--        <Button-->
+<!--            android:id="@+id/btnSetting"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:elegantTextHeight="true"-->
+<!--            android:fontFamily="sans-serif-light"-->
+<!--            android:gravity="start"-->
+<!--            android:text="Pengaturan"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="?attr/colorSecondary"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="normal"-->
+<!--            style="@style/Widget.MaterialComponents.Button.TextButton"/>-->
+
+        <Button
+            android:id="@+id/btnWallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:fontFamily="sans-serif-light"
+            android:gravity="start"
+            android:text="Kelola Wallet"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            app:icon="@drawable/ic_baseline_account_balance_wallet_24"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+        <Button
+            android:id="@+id/btnKategori"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:fontFamily="sans-serif-light"
+            android:gravity="start"
+            android:text="Kelola Kategori"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            app:icon="@drawable/ic_baseline_format_list_bulleted_24"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+        <Button
+            android:id="@+id/btnEkspor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:fontFamily="sans-serif-light"
+            android:gravity="start"
+            android:text="Ekspor / Impor Data"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            app:icon="@drawable/ic_baseline_folder_copy_24"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSetting"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:backgroundTint="?android:attr/colorBackground"
-        android:elegantTextHeight="true"
-        android:fontFamily="sans-serif-light"
-        android:gravity="start"
-        android:text="Pengaturan"
-        android:textAllCaps="false"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="24sp"
-        android:textStyle="normal"
-        app:cornerRadius="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btnWallet"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?android:attr/colorBackground"
-        android:elegantTextHeight="true"
-        android:fontFamily="sans-serif-light"
-        android:gravity="start"
-        android:text="Kelola Wallet"
-        android:textAllCaps="false"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="24sp"
-        android:textStyle="normal"
-        app:cornerRadius="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSetting"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btnKategori"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?android:attr/colorBackground"
-        android:elegantTextHeight="true"
-        android:fontFamily="sans-serif-light"
-        android:gravity="start"
-        android:text="Kelola Kategori"
-        android:textAllCaps="false"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="24sp"
-        android:textStyle="normal"
-        app:cornerRadius="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnWallet"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btnEkspor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?android:attr/colorBackground"
-        android:elegantTextHeight="true"
-        android:fontFamily="sans-serif-light"
-        android:gravity="start"
-        android:text="Ekspor Data"
-        android:textAllCaps="false"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="24sp"
-        android:textStyle="normal"
-        app:cornerRadius="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnKategori"
-        app:layout_constraintVertical_bias="0.0" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -1,7 +1,10 @@
 package com.example.ourmoney.Fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ourmoney.Activities.CategoryAndWalletActivity;
 import com.example.ourmoney.Activities.StoreDataActivity;
@@ -31,7 +36,9 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM3 = "param3";
 
     TextView jumduit,user;
-    Button setting, kategori, wallet, expor;
+    Button editName, kategori, wallet, expor, btnSimpan;
+    EditText edtNewName;
+    Dialog editNameDialog;
     ArrayList<Wallet> daftarwalletfrag;
     ArrayList<Category> daftarkategori;
     private SavingTarget currentTarget;
@@ -67,7 +74,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        setting = v.findViewById(R.id.btnSetting);
+//        setting = v.findViewById(R.id.btnSetting);
+        editName = v.findViewById(R.id.btnEditName);
         kategori = v.findViewById(R.id.btnKategori);
         wallet = v.findViewById(R.id.btnWallet);
         expor = v.findViewById(R.id.btnEkspor);
@@ -75,8 +83,30 @@ public class ProfileFragment extends Fragment {
         user = v.findViewById(R.id.tvnamauser);
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences("setting",getActivity().MODE_PRIVATE);
-        user.setText("Nama User: "+sharedPref.getString("name","no"));
+        user.setText(sharedPref.getString("name","no"));
 
+        editNameDialog = new Dialog(getContext());
+        editNameDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        editNameDialog.setContentView(R.layout.dialog_change_name);
+
+        btnSimpan = editNameDialog.findViewById(R.id.btnSimpan);
+        edtNewName = editNameDialog.findViewById(R.id.edtNewName);
+
+        btnSimpan.setOnClickListener(view -> {
+            String newName = edtNewName.getText().toString();
+            if (newName.isEmpty()){
+                Toast.makeText(getContext(), "Mohon masukkan nama baru", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("setting", getActivity().MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("name", newName);
+            editor.apply();
+
+            editNameDialog.hide();
+            user.setText(newName);
+        });
 
         kategori.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,13 +137,17 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        editName.setOnClickListener(view -> {
+            editNameDialog.show();
+        });
+
         int totalBalance = 0;
         for (int i = 0; i < daftarwalletfrag.size(); i++) {
             totalBalance += daftarwalletfrag.get(i).getWalletAmount();
         }
 
         String displayBalance = String.format("%,8d%n", totalBalance);
-        jumduit.setText("Saldo Anda: Rp " + displayBalance);
+        jumduit.setText("Saldo : Rp. " + displayBalance);
 
     }
 

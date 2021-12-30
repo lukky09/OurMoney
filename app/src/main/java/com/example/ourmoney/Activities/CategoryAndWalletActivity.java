@@ -42,7 +42,6 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
     ActivityCategoryAndWalletBinding binding;
     ArrayList<Wallet> daftarwallet;
     ArrayList<Category> daftarkategori;
-    Button hiddenmasukan,hiddenkeluaran;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +53,9 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         if (isCategory) {
-            hiddenmasukan = new Button(this);
-            hiddenmasukan.setText("Pemasukan");
-            hiddenmasukan.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-            binding.ll.addView(hiddenmasukan);
-            hiddenmasukan.setOnClickListener(view -> showKategori(false));
-
-            hiddenkeluaran = new Button(this);
-            hiddenkeluaran.setText("Pengeluaran");
-            hiddenkeluaran.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-            binding.ll.addView(hiddenkeluaran);
-            hiddenkeluaran.setOnClickListener(view -> showKategori(true));
-
+            binding.ll.setVisibility(View.VISIBLE);
+            binding.btnIncome.setOnClickListener(view -> showKategori(false));
+            binding.btnExpense.setOnClickListener(view -> showKategori(true));
 
         } else {
             binding.tvtitlecatandwal.setText("Wallet");
@@ -132,12 +122,12 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
         binding.listviewcatwal.setAdapter(adapter);
         if (isPengeluaran) {
             binding.tvtitlecatandwal.setText("Kategori Pengeluaran");
-            hiddenkeluaran.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.crimson_red));
-            hiddenmasukan.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
+            binding.btnExpense.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.crimson_red));
+            binding.btnIncome.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
         } else {
             binding.tvtitlecatandwal.setText("Kategori Pemasukan");
-            hiddenmasukan.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.lime_green));
-            hiddenkeluaran.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
+            binding.btnExpense.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.silver));
+            binding.btnIncome.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.lime_green));
         }
     }
 

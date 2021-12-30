@@ -1,12 +1,16 @@
 package com.example.ourmoney.Activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +21,7 @@ import com.example.ourmoney.Models.MoneyTransaction;
 import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.Models.TransactionWithRelation;
 import com.example.ourmoney.Models.Wallet;
+import com.example.ourmoney.R;
 import com.example.ourmoney.databinding.ActivityStoreDataBinding;
 
 import java.io.File;
@@ -46,6 +51,10 @@ public class StoreDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityStoreDataBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        setTitle("Ekspor / Impor Data");
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent par = getIntent();
         if(par.hasExtra("daftarwallet") && par.hasExtra("daftarkategori") && par.hasExtra("savingtarget")){
@@ -79,6 +88,17 @@ public class StoreDataActivity extends AppCompatActivity {
         binding.btnDoload.setOnClickListener(this::doReadSerialize);
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void doWriteSerialize(View view){

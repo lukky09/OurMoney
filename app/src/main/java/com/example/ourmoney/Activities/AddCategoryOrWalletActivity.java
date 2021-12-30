@@ -49,11 +49,11 @@ public class AddCategoryOrWalletActivity extends AppCompatActivity {
         iscat = getIntent().getBooleanExtra("iscategory", true);
 
         if (iscat) {
-            binding.etnamacatwal.setHint("Nama Kategori");
+            binding.tiLayoutWallet.setHint("Nama Kategori");
             binding.rbinwalcat.setChecked(true);
-            binding.tvnamacatwal.setText("Insert Kategori");
+            binding.tvnamacatwal.setText("Tambah Kategori");
             binding.lladd.removeViewAt(3);
-            binding.btncatwal.setText("Tambah Kategory");
+            binding.btncatwal.setText("Tambah Kategori");
         } else {
             binding.lladd.removeViewAt(2);
         }
