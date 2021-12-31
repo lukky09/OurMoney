@@ -100,12 +100,12 @@ public class SavingCashFragment extends Fragment {
         DateFormat a = new SimpleDateFormat("dd MMM yyyy HH:mm");
         if(target.isActive()){
             binding.tvduedateangka.setText(a.format(target.getTargetDeadline()));
-            binding.tvtarget.setText(target.getTargetAmount().toString());
+            binding.tvtarget.setText("Target: Rp "+target.getTargetAmount().toString());
             binding.tvprogressangka.setText("Rp "+target.getAccumulated().toString());
         }else{
             binding.tvduedateangka.setText(a.format(target.getTargetDeadline()));
-            binding.tvtarget.setText("No active target");
-            binding.tvprogressangka.setText("No active target");
+            binding.tvtarget.setText("Target tidak aktif");
+            binding.tvprogressangka.setText("Target tidak aktif");
         }
 
         binding.btnAddSaving.setOnClickListener(new View.OnClickListener() {

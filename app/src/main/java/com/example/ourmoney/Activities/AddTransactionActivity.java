@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.Models.TransactionWithRelation;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
@@ -308,13 +309,17 @@ class UpdateTransactionAsync {
 
             appDatabase.appDao().updateWallet(wallet);
 
+            SavingTarget s = appDatabase.appDao().getTarget().get(0);
             Wallet w = appDatabase.appDao().getWalletbyID(transaction.getWallet_id()).get(0);
             Category c = appDatabase.appDao().getCategorybyID(transaction.getCategory_id()).get(0);
             if(c.isPengeluaran()){
                 w.setWalletAmount(w.getWalletAmount()-transaction.getTransaction_amount());
+                s.setAccumulated(s.getAccumulated()-transaction.getTransaction_amount());
             }else{
                 w.setWalletAmount(w.getWalletAmount()+transaction.getTransaction_amount());
+                s.setAccumulated(s.getAccumulated()+transaction.getTransaction_amount());
             }
+            appDatabase.appDao().updateTarget(s);
             appDatabase.appDao().updateWallet(w);
             appDatabase.appDao().updateTransaction(transaction);
 
@@ -349,13 +354,17 @@ class AddTransactionAsync {
             Context context = weakContext.get();
             AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
 
+            SavingTarget s = appDatabase.appDao().getTarget().get(0);
             Wallet w= appDatabase.appDao().getWalletbyID(transaction.getWallet_id()).get(0);
             Category c = appDatabase.appDao().getCategorybyID(transaction.getCategory_id()).get(0);
             if(c.isPengeluaran()){
                 w.setWalletAmount(w.getWalletAmount()-transaction.getTransaction_amount());
+                s.setAccumulated(s.getAccumulated()-transaction.getTransaction_amount());
             }else{
                 w.setWalletAmount(w.getWalletAmount()+transaction.getTransaction_amount());
+                s.setAccumulated(s.getAccumulated()+transaction.getTransaction_amount());
             }
+            appDatabase.appDao().updateTarget(s);
             appDatabase.appDao().updateWallet(w);
             appDatabase.appDao().insertTransaction(transaction);
 
