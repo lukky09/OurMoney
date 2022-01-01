@@ -2,6 +2,7 @@ package com.example.ourmoney.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -100,12 +101,12 @@ public class SavingCashFragment extends Fragment {
         DateFormat a = new SimpleDateFormat("dd MMM yyyy HH:mm");
         if(target.isActive()){
             binding.tvduedateangka.setText(a.format(target.getTargetDeadline()));
-            binding.tvtarget.setText("Target: Rp "+target.getTargetAmount().toString());
-            binding.tvprogressangka.setText("Rp "+target.getAccumulated().toString());
+            binding.tvtargetamt.setText("Rp. " + String.format("%,.0f", Float.parseFloat(target.getTargetAmount()+"")));
+            //binding.tvprogressangka.setText("Rp "+target.getAccumulated().toString());
         }else{
             binding.tvduedateangka.setText(a.format(target.getTargetDeadline()));
-            binding.tvtarget.setText("Target tidak aktif");
-            binding.tvprogressangka.setText("Target tidak aktif");
+            binding.tvtargetamt.setText("Target tidak aktif");
+            //binding.tvprogressangka.setText("Target tidak aktif");
         }
 
         binding.btnAddSaving.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +116,21 @@ public class SavingCashFragment extends Fragment {
                 act.launch(i);
             }
         });
+        if(!target.isActive()){
+            binding.tvstatus.setText("Tidak ada target aktif");
 
+        }else if(target.getAccumulated()< 0) {
+            String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat(target.getAccumulated()+""));
+            binding.tvstatus.setTextColor(Color.parseColor("#f6251b"));
+            binding.tvstatus.setText("Anda sedang memiliki kerugian sejumlah "+displayBalance+". Batasi Pengeluaran anda");
+        }else if(target.getAccumulated()>target.getTargetAmount()){
+            String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat((target.getAccumulated() - target.getTargetAmount())+""));
+            binding.tvstatus.setTextColor(Color.parseColor("#1bf61e"));
+            binding.tvstatus.setText("Anda sudah melewati target sebanyak "+displayBalance+". Pertahankan :)");
+        }else{
+            String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat((target.getTargetAmount() - target.getAccumulated())+""));
+            binding.tvstatus.setTextColor(Color.parseColor("#f6b81b"));
+            binding.tvstatus.setText("Anda sejauh "+displayBalance+" dari target anda, lanjutkan :)");
+        }
     }
 }

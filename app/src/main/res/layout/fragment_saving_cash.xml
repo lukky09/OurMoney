@@ -39,10 +39,9 @@
         app:layout_constraintVertical_bias="0.063">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textView12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal|center_vertical"
             android:text="Tabungan Saat Ini"
@@ -53,10 +52,61 @@
         <TextView
             android:id="@+id/tvtarget"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Target: Rp"
+            android:text="Target:"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvprogress"-->
+<!--                android:layout_width="175dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="sans-serif-light"-->
+<!--                android:text="Perkembangan"-->
+<!--                android:textColor="?attr/colorSecondary"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvprogressangka"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="TextView"-->
+<!--                android:textSize="20sp" />-->
+
+<!--        </LinearLayout>-->
+
+        <TextView
+            android:id="@+id/tvtargetamt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Rp. "
+            android:textColor="?attr/colorSecondary"
+            android:textSize="38sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvduedate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Berlaku hingga:"
+            android:textAlignment="center"
             android:textColor="?attr/colorSecondary"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -64,46 +114,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tvprogress"
-                android:layout_width="175dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="Perkembangan"
-                android:textColor="?attr/colorSecondary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvprogressangka"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tvduedate"
-                android:layout_width="175dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="Berlaku hingga"
-                android:textColor="?attr/colorSecondary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvduedateangka"
@@ -111,8 +123,33 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="TextView"
-                android:textSize="20sp" />
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvstat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Status Tabungan :"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvstatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
