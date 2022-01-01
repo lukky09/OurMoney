@@ -19,9 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tambah Wallet"
+            android:textColor="?attr/colorSecondary"
             android:textSize="34sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tiLayoutWallet"
@@ -34,9 +34,9 @@
                 android:id="@+id/etnamacatwal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textPersonName"
+                android:backgroundTint="@color/silver"
                 android:ems="10"
-                android:backgroundTint="@color/whitesmoke"/>
+                android:inputType="textPersonName" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,9 +72,9 @@
                 android:id="@+id/etjumwallet"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="number"
+                android:backgroundTint="@color/silver"
                 android:ems="10"
-                android:backgroundTint="@color/whitesmoke"/>
+                android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

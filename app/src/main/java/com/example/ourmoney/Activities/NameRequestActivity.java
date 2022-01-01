@@ -11,6 +11,12 @@ import android.widget.Toast;
 
 import com.example.ourmoney.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class NameRequestActivity extends AppCompatActivity {
 
     EditText et;
@@ -36,8 +42,31 @@ public class NameRequestActivity extends AppCompatActivity {
     }
 
     void pindah(){
+        doWriteSerialize();
         Intent i = new Intent(this,MainActivity.class);
         startActivity(i);
         finish();
+    }
+    public void doWriteSerialize(){
+        String pathToOurMoneyFolder = getExternalFilesDir(null).getAbsolutePath();
+        String fileName = pathToOurMoneyFolder + File.separator +"saveourmoney.txt";
+//        String fileName = "lala/saveourmoney.txt";
+        FileOutputStream fos = null;
+        try {
+//            fos = getApplicationContext().openFileOutput();
+            fos = new FileOutputStream(fileName);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.close();
+            fos.close();
+            Toast.makeText(getApplicationContext(), "Untuk load data, file txt bisa diletakkan di Internal Storage/Android/data/com.example.ourmoney/files", Toast.LENGTH_SHORT).show();
+            System.out.println("Save data success!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Save data fail!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Save data fail!");
+        }
+
     }
 }

@@ -16,4 +16,5 @@
     <color name="lime_green">#32cd32</color>
     <color name="silver">#c0c0c0</color>
     <color name="whitesmoke">#f4f4f4</color>
+    <color name="transparent">#20808080</color>
 </resources>

@@ -37,9 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Wallet"
+        android:textColor="?attr/colorSecondary"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/listviewcatwal"
