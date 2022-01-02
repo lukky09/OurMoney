@@ -16,11 +16,11 @@
             android:id="@+id/tvTransactionType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_alignParentStart="true"
+            android:layout_weight="1"
             android:text="Pengeluaran"
-            android:textSize="24sp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorSecondary"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tvTransactionAmount"
@@ -55,11 +55,11 @@
             android:id="@+id/tvCategory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
             android:text="Kategori"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorSecondary"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -84,11 +84,11 @@
             android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
             android:text="Tanggal"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorSecondary"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -113,11 +113,11 @@
             android:id="@+id/tvWallet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
             android:text="Dompet"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorSecondary"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -132,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Catatan"
-        android:textColor="@color/black"/>
+        android:textColor="?attr/colorSecondary" />
 
     <TextView
         android:id="@+id/tvNote"
@@ -141,8 +141,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:text="Ini Catatan"
-        android:textSize="18sp"
-        android:textColor="@color/black"/>
+        android:textColor="?attr/colorSecondary"
+        android:textSize="18sp" />
 
     <View
         android:layout_width="match_parent"
@@ -152,30 +152,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/whitesmoke">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/btnEditTransaction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:backgroundTint="@color/teal_700"
             android:padding="10dp"
             android:text="Edit"
-            android:backgroundTint="@color/teal_700"
-            app:cornerRadius="50dp"/>
+            app:cornerRadius="50dp" />
 
 
         <Button
             android:id="@+id/btnDeleteTransaction"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:padding="10dp"
             android:text="Hapus Transaksi"
             app:cornerRadius="50dp"
-            app:strokeColor="@color/OurRed"
-            style="?attr/materialButtonOutlinedStyle"/>
+            app:strokeColor="@color/OurRed" />
 
     </LinearLayout>
 

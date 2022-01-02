@@ -82,7 +82,7 @@ public class AddTargetActivity extends AppCompatActivity {
             setResult(110, back);
             finish();
         }else{
-            Toast.makeText(getApplicationContext(), "Target deadline tidak boleh sebelum hari ini", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Tenggat waktu harus lebih dari hari ini!", Toast.LENGTH_SHORT).show();
         }
     }
 }
