@@ -46,10 +46,14 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Category> daftarkategori;
     private SavingTarget currentTarget;
     private BottomNavigationView navbar;
+    private boolean navigate1, navigate2, start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        start = false;
+        navigate1 = false;
+        navigate2 = false;
         setContentView(R.layout.activity_main);
 
         new AddPresetData(this, this::getData).execute();
@@ -73,20 +77,28 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.homeFragment:
                         frag = HomeFragment.newInstance(daftarwallet);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+                        navigate1=false;
+                        navigate2=false;
 
                         break;
                     case R.id.manageFragment:
                         frag = SavingCashFragment.newInstance(currentTarget);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+                        navigate1=false;
+                        navigate2=true;
 
                         break;
                     case R.id.reportFragment:
                         frag = ReportFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+                        navigate1=true;
+                        navigate2=false;
                         break;
                     case R.id.userFragment:
                         frag = ProfileFragment.newInstance(daftarwallet, daftarkategori, currentTarget);
                         getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, frag).commit();
+                        navigate1=true;
+                        navigate2=true;
                         break;
                 }
 
@@ -108,10 +120,34 @@ public class MainActivity extends AppCompatActivity {
                 daftarkategori = new ArrayList<>();
                 daftarwallet.addAll(wallet);
                 daftarkategori.addAll(categories);
+
+
                 Fragment welcomeFragment;
-                welcomeFragment = HomeFragment.newInstance(daftarwallet);
-                getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
-                navbar.setSelectedItemId(R.id.homeFragment);
+                if(start == false){
+                    welcomeFragment = HomeFragment.newInstance(daftarwallet);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
+                    navbar.setSelectedItemId(R.id.homeFragment);
+                    start=true;
+                }else{
+                    if(!navigate1 && !navigate2){
+                        welcomeFragment = HomeFragment.newInstance(daftarwallet);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
+                        navbar.setSelectedItemId(R.id.homeFragment);
+                    }else if(!navigate1 && navigate2){
+                        welcomeFragment = SavingCashFragment.newInstance(currentTarget);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
+                        navbar.setSelectedItemId(R.id.manageFragment);
+                    }else if(navigate1 && !navigate2){
+                        welcomeFragment = ReportFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
+                        navbar.setSelectedItemId(R.id.reportFragment);
+                    }else{
+                        welcomeFragment = ProfileFragment.newInstance(daftarwallet, daftarkategori, currentTarget);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.penampungFragment, welcomeFragment).commit();
+                        navbar.setSelectedItemId(R.id.userFragment);
+                    }
+                }
+
             }
         }).execute();
         new GetTarget(this, new GetTarget.TargetCallback() {
