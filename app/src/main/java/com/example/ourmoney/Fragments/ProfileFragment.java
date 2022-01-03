@@ -146,7 +146,7 @@ public class ProfileFragment extends Fragment {
             totalBalance += daftarwalletfrag.get(i).getWalletAmount();
         }
 
-        String displayBalance = String.format("%,8d%n", totalBalance);
+        String displayBalance = String.format("%,.0f", Float.parseFloat(totalBalance+""));
         jumduit.setText("Saldo : Rp. " + displayBalance);
 
     }

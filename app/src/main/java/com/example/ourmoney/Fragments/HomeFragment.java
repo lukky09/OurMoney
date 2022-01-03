@@ -91,11 +91,12 @@ public class HomeFragment extends Fragment {
         String username = sharedPreferences.getString("name", "user");
         binding.lblOurMoney.append(username);
 
-        int totalBalance = 0;
+        int totalBalance = 0, total;
         for (int i = 0; i < daftarwallet.size(); i++) {
             totalBalance+=daftarwallet.get(i).getWalletAmount();
         }
-        String displayBalance = String.format("%,8d%n",totalBalance);
+//        String displayBalance = String.format("%,8d%n",totalBalance);
+        String displayBalance = String.format("%,.0f", Float.parseFloat(totalBalance+""));
         binding.lblBalance.setText("Rp "+displayBalance);
 
         System.out.println("Current amount of transaction is "+daftarwallet.size());
@@ -153,7 +154,21 @@ public class HomeFragment extends Fragment {
 
         transactions.addAll(transactionList);
 
-        System.out.println("tes");
+        // ngitung total pemasukan & pengeluaran buat overview
+        int totalIncome=0, totalExpense=0;
+        for (int i=0; i<transactions.size(); i++){
+            if (transactions.get(i).category.isPengeluaran()){
+                totalExpense += transactions.get(i).transaction.getTransaction_amount();
+            }
+            else{
+                totalIncome += transactions.get(i).transaction.getTransaction_amount();
+            }
+        }
+        String displayIncome = String.format("%,.0f", Float.parseFloat(totalIncome+""));
+        String displayExpense = String.format("%,.0f", Float.parseFloat(totalExpense+""));
+        binding.lblIncome.setText("Rp " + displayIncome);
+        binding.lblExpense.setText("Rp " + displayExpense);
+
         adapter = new TransactionAdapter(transactions);
         adapter.setOnItemClickCallback(new TransactionAdapter.OnItemClickCallback() {
             @Override

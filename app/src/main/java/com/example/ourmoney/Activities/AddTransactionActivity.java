@@ -222,13 +222,18 @@ public class AddTransactionActivity extends AppCompatActivity {
                 }
                 transaction.wallet.setWalletAmount(amountBeforeUpdate);
 
+                int prevAmount = transaction.transaction.getTransaction_amount();
+                if (!transaction.category.isPengeluaran()){
+                    prevAmount = -prevAmount;
+                }
+
                 transaction.transaction.setTransaction_amount(amount);
                 transaction.transaction.setTransaction_date(selectedDate);
                 transaction.transaction.setTransaction_note(note);
                 transaction.transaction.setCategory_id(categoryId);
                 transaction.transaction.setWallet_id(walletId);
 
-                new UpdateTransactionAsync(transaction, this, new UpdateTransactionAsync.UpdateTransactionCallback() {
+                new UpdateTransactionAsync(transaction, prevAmount, this, new UpdateTransactionAsync.UpdateTransactionCallback() {
                     @Override
                     public void postExecute(String msg) {
                         Intent intent = new Intent();
@@ -291,12 +296,14 @@ class UpdateTransactionAsync {
     private final WeakReference<UpdateTransactionCallback> weakCallback;
     private MoneyTransaction transaction;
     private Wallet wallet;
+    private int prevAmount;
 
-    public UpdateTransactionAsync(TransactionWithRelation transaction, Context context, UpdateTransactionCallback callback){
+    public UpdateTransactionAsync(TransactionWithRelation transaction, int prevAmount, Context context, UpdateTransactionCallback callback){
         this.weakContext = new WeakReference<>(context);
         this.weakCallback = new WeakReference<>(callback);
         this.transaction = transaction.transaction;
         this.wallet = transaction.wallet;
+        this.prevAmount = prevAmount;
     }
 
     void execute(){
@@ -314,10 +321,10 @@ class UpdateTransactionAsync {
             Category c = appDatabase.appDao().getCategorybyID(transaction.getCategory_id()).get(0);
             if(c.isPengeluaran()){
                 w.setWalletAmount(w.getWalletAmount()-transaction.getTransaction_amount());
-                s.setAccumulated(s.getAccumulated()-transaction.getTransaction_amount());
+                s.setAccumulated(s.getAccumulated()+prevAmount-transaction.getTransaction_amount());
             }else{
                 w.setWalletAmount(w.getWalletAmount()+transaction.getTransaction_amount());
-                s.setAccumulated(s.getAccumulated()+transaction.getTransaction_amount());
+                s.setAccumulated(s.getAccumulated()+prevAmount+transaction.getTransaction_amount());
             }
             appDatabase.appDao().updateTarget(s);
             appDatabase.appDao().updateWallet(w);

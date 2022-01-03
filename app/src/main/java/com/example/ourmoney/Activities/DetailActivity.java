@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
 import com.example.ourmoney.Models.MoneyTransaction;
+import com.example.ourmoney.Models.SavingTarget;
 import com.example.ourmoney.Models.TransactionWithRelation;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
@@ -160,10 +161,23 @@ class DeleteTransactionAsync {
 
             appDatabase.appDao().deleteTransaction(transaction);
 
+            // mungkin bisa dianggap bug?
+            // sebelumnya lupa bedain transaksi yg dihapus itu pengeluaran atau pemasukan,
+            // jadi tiap kali hapus transaksi saldo walletnya bertambah terus soalnya dianggap
+            // pengeluaran yg dihapus. seharusnya kalo pemasukan dihapus saldo walletnya berkurang
+            Category category = appDatabase.appDao().getCategorybyID(transaction.getCategory_id()).get(0);
+            if (!category.isPengeluaran()){
+                transaction.setTransaction_amount(-transaction.getTransaction_amount());
+            }
             // update isi wallet
             Wallet wallet = appDatabase.appDao().getWalletbyID(transaction.getWallet_id()).get(0);
             wallet.setWalletAmount(wallet.getWalletAmount() + transaction.getTransaction_amount());
             appDatabase.appDao().updateWallet(wallet);
+
+            // update target saving
+            SavingTarget s = appDatabase.appDao().getTarget().get(0);
+            s.setAccumulated(s.getAccumulated() + transaction.getTransaction_amount());
+            appDatabase.appDao().updateTarget(s);
 
             handler.post(()->{
                 weakCallback.get().postExecute("Transaksi Berhasil Dihapus");
