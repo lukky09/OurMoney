@@ -24,7 +24,7 @@
         <item>Dompet Cadangan</item>
     </string-array>
     <string-array name="reportOptions">
-        <item>Sepanjang Waktu</item>
+        <item>Keseluruhan</item>
         <item>Bulan Ini</item>
         <item>Bulan Lalu</item>
         <item>2 Bulan Lalu</item>
