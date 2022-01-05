@@ -36,6 +36,8 @@ public class AddCategoryOrWalletActivity extends AppCompatActivity {
     ActivityAddCategoryOrWalletBinding binding;
 
     boolean iscat;
+    Category cat = null;
+    Wallet wal = null;
 
 
     @Override
@@ -53,9 +55,21 @@ public class AddCategoryOrWalletActivity extends AppCompatActivity {
             binding.rbinwalcat.setChecked(true);
             binding.tvnamacatwal.setText("Tambah Kategori");
             binding.lladd.removeViewAt(3);
-            binding.btncatwal.setText("Tambah Kategori");
+            binding.btncatwal.setText("Simpan Kategori");
+            if(getIntent().hasExtra("category")){
+                cat = getIntent().getParcelableExtra("category");
+                binding.etnamacatwal.setText(cat.getCategoryName());
+                if(cat.isPengeluaran()) binding.rboutwalcat.setChecked(true);
+                else binding.rbinwalcat.setChecked(true);
+                binding.tvnamacatwal.setText("Edit Kategori");
+            }
         } else {
             binding.lladd.removeViewAt(2);
+            if(getIntent().hasExtra("wallet")){
+                wal = getIntent().getParcelableExtra("wallet");
+                binding.lladd.removeViewAt(2);
+                binding.tvnamacatwal.setText("Edit Wallet");
+            }
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -72,7 +86,9 @@ public class AddCategoryOrWalletActivity extends AppCompatActivity {
             Toast.makeText(this, "Mohon diisi semuanya", Toast.LENGTH_SHORT).show();
         else {
             if (iscat) {
-                new AddCategory(new Category(nama, binding.rboutwalcat.isChecked()), this, new AddCategory.AddWalletallback() {
+                Category sendcat = new Category(nama, binding.rboutwalcat.isChecked());
+                if(cat!=null) sendcat.setCategoryId(cat.getCategoryId());
+                new AddCategory(sendcat, this, new AddCategory.AddWalletallback() {
                     @Override
                     public void postExecute(String msg, boolean succ) {
                         Toast.makeText(AddCategoryOrWalletActivity.this, msg, Toast.LENGTH_SHORT).show();
@@ -83,10 +99,17 @@ public class AddCategoryOrWalletActivity extends AppCompatActivity {
                     }
                 }).execute();
             } else {
-                if (binding.etjumwallet.getText().toString().trim().length() == 0)
+                if (binding.etjumwallet.getText().toString().trim().length() == 0 && wal==null)
                     Toast.makeText(this, "Mohon diisi semuanya", Toast.LENGTH_SHORT).show();
                 else {
-                    new AddWallet(new Wallet(nama, Integer.parseInt(binding.etjumwallet.getText().toString())), this, new AddWallet.AddWalletallback() {
+                    Wallet sendwallet;
+                    if(wal!=null) {
+                        sendwallet = wal;
+                        sendwallet.setWalletName(nama);
+                    }else{
+                        sendwallet = new Wallet(nama, Integer.parseInt(binding.etjumwallet.getText().toString()));
+                    }
+                    new AddWallet(sendwallet, this, new AddWallet.AddWalletallback() {
                         @Override
                         public void postExecute(String msg, boolean succ) {
                             Toast.makeText(AddCategoryOrWalletActivity.this, msg, Toast.LENGTH_SHORT).show();
@@ -96,7 +119,6 @@ public class AddCategoryOrWalletActivity extends AppCompatActivity {
                             }
                         }
                     }).execute();
-
                 }
             }
         }
@@ -132,14 +154,20 @@ class AddWallet {
 
             String msg;
             Boolean succ;
-            List<Wallet> cek = appDatabase.appDao().getWalletbyName(wallet.getWalletName());
-            if(cek.size()>0){
-                msg = "Wallet sudah ada";
-                succ = false;
+            if(wallet.getWallet_id()==0) {
+                List<Wallet> cek = appDatabase.appDao().getWalletbyName(wallet.getWalletName());
+                if (cek.size() > 0) {
+                    msg = "Wallet sudah ada";
+                    succ = false;
+                } else {
+                    wallet.setWalletName(wallet.getWalletName().substring(0, 1).toUpperCase() + wallet.getWalletName().substring(1).toLowerCase());
+                    appDatabase.appDao().insertWallet(wallet);
+                    msg = "Wallet ditambahkan :D";
+                    succ = true;
+                }
             }else{
-                wallet.setWalletName(wallet.getWalletName().substring(0, 1).toUpperCase() + wallet.getWalletName().substring(1).toLowerCase());
-                appDatabase.appDao().insertWallet(wallet);
-                msg = "Wallet ditambahkan :D";
+                appDatabase.appDao().updateWallet(wallet);
+                msg = "Wallet telah diedit";
                 succ = true;
             }
 
@@ -175,16 +203,23 @@ class AddCategory {
 
             String msg;
             Boolean succ;
-            List<Category> cek = appDatabase.appDao().getCategorybyName(category.getCategoryName());
-            if(cek.size()>0){
-                msg = "Kategori sudah ada";
-                succ = false;
+            if(category.getCategoryId()==0){
+                List<Category> cek = appDatabase.appDao().getCategorybyName(category.getCategoryName());
+                if(cek.size()>0){
+                    msg = "Kategori sudah ada";
+                    succ = false;
+                }else{
+                    category.setCategoryName(category.getCategoryName().substring(0, 1).toUpperCase() + category.getCategoryName().substring(1).toLowerCase());
+                    appDatabase.appDao().insertCategory(category);
+                    msg = "Kategori ditambahkan :D";
+                    succ = true;
+                }
             }else{
-                category.setCategoryName(category.getCategoryName().substring(0, 1).toUpperCase() + category.getCategoryName().substring(1).toLowerCase());
-                appDatabase.appDao().insertCategory(category);
-                msg = "Kategori ditambahkan :D";
+                appDatabase.appDao().updateCategory(category);
                 succ = true;
+                msg = "Kategori telah diubah";
             }
+
 
             handler.post(()->{
                 weakCallback.get().postExecute(msg,succ);

@@ -87,7 +87,7 @@
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/OurRed"
         android:onClick="additem"
-        android:text="Tambah Wallet"
+        android:text="Simpan Wallet"
         app:cornerRadius="50dp" />
 
 </RelativeLayout>

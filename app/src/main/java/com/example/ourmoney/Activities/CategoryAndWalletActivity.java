@@ -11,17 +11,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
@@ -106,6 +107,15 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
                 }else{
                     ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(CategoryAndWalletActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, daftarwallet);
                     binding.listviewcatwal.setAdapter(adapter);
+                    binding.listviewcatwal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent in = new Intent(getBaseContext(), AddCategoryOrWalletActivity.class);
+                            in.putExtra("iscategory", isCategory);
+                            in.putExtra("wallet", (Parcelable) daftarwallet.get(i));
+                            startActivityForResult(in, 1);
+                        }
+                    });
                 }
             }
         }).execute();
@@ -120,6 +130,15 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
         }
         ArrayAdapter<Category> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listca);
         binding.listviewcatwal.setAdapter(adapter);
+        binding.listviewcatwal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent in = new Intent(getBaseContext(), AddCategoryOrWalletActivity.class);
+                in.putExtra("iscategory", isCategory);
+                in.putExtra("category", (Parcelable) listca.get(i));
+                startActivityForResult(in, 1);
+            }
+        });
         if (isPengeluaran) {
             binding.tvtitlecatandwal.setText("Kategori Pengeluaran");
             binding.btnExpense.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.crimson_red));
