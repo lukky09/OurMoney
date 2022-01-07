@@ -148,14 +148,14 @@ public class AddTransactionActivity extends AppCompatActivity {
                 binding.tbAmount.append(transaction.transaction.getTransaction_amount()+"");
                 binding.tbNote.append(transaction.transaction.getTransaction_note());
 
-                for (int i=0; i<daftarcategorysorted.size(); i++){
-                    if (daftarcategorysorted.get(i).equals(transaction.category)){
+                for (int i=0; i<daftarcategorysorted.size(); i++) {
+                    if (daftarcategorysorted.get(i).getCategoryId() == transaction.category.getCategoryId()) {
                         binding.spinnerCategory.setSelection(i);
                         break;
                     }
                 }
                 for (int i=0; i<daftarwallet.size(); i++){
-                    if (daftarwallet.get(i).equals(transaction.wallet)){
+                    if (daftarwallet.get(i).getWallet_id()  == transaction.wallet.getWallet_id()){
                         binding.spinnerWallet.setSelection(i);
                         break;
                     }

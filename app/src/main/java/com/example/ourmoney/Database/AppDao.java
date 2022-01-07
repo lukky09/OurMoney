@@ -84,9 +84,9 @@ public interface AppDao {
 
     @Update
     void updateWallet(Wallet wallet);
-//
-//    @Delete
-//    void deleteWallet(Wallet wallet);
+
+    @Delete
+    void deleteWallet(Wallet wallet);
 
     //DAO TARGET --------------------------------------------------------
     @Query("select * from savingtarget where id = 1")

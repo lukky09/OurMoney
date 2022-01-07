@@ -22,7 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Category;
@@ -110,10 +112,29 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
                     binding.listviewcatwal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent in = new Intent(getBaseContext(), AddCategoryOrWalletActivity.class);
-                            in.putExtra("iscategory", isCategory);
-                            in.putExtra("wallet", (Parcelable) daftarwallet.get(i));
-                            startActivityForResult(in, 1);
+                            PopupMenu popup = new PopupMenu(getBaseContext(), view);
+                            popup.inflate(R.menu.editdeletemenu);
+                            popup.show();
+                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem menuItem) {
+                                    if(menuItem.getItemId() == R.id.edititem){
+                                        Intent in = new Intent(getBaseContext(), AddCategoryOrWalletActivity.class);
+                                        in.putExtra("iscategory", isCategory);
+                                        in.putExtra("wallet", (Parcelable) daftarwallet.get(i));
+                                        startActivityForResult(in, 1);
+                                    }else{
+                                        new DeleteWallet(getBaseContext(), new DeleteWallet.AddTransactionCallback() {
+                                            @Override
+                                            public void postExecute(String message) {
+                                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                getdata(false);
+                                            }
+                                        },daftarwallet.get(i)).execute();
+                                    }
+                                    return true;
+                                }
+                            });
                         }
                     });
                 }
@@ -133,10 +154,29 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
         binding.listviewcatwal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent in = new Intent(getBaseContext(), AddCategoryOrWalletActivity.class);
-                in.putExtra("iscategory", isCategory);
-                in.putExtra("category", (Parcelable) listca.get(i));
-                startActivityForResult(in, 1);
+                PopupMenu popup = new PopupMenu(getBaseContext(), view);
+                popup.inflate(R.menu.editdeletemenu);
+                popup.show();
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if(menuItem.getItemId() == R.id.edititem){
+                            Intent in = new Intent(getBaseContext(), AddCategoryOrWalletActivity.class);
+                            in.putExtra("iscategory", isCategory);
+                            in.putExtra("category", (Parcelable) listca.get(i));
+                            startActivityForResult(in, 1);
+                        }else{
+                            new DeleteKategori(getBaseContext(), new DeleteKategori.DeleteKategoriCallback() {
+                                @Override
+                                public void postExecute(String message) {
+                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                    getdata(false);
+                                }
+                            }, listca.get(i)).execute();
+                        }
+                        return true;
+                    }
+                });
             }
         });
         if (isPengeluaran) {
@@ -185,5 +225,69 @@ class GetBoth{
 
     interface AddTransactionCallback{
         void postExecute(List<Wallet> wallet,List<Category> categories);
+    }
+}
+
+class DeleteWallet{
+    private WeakReference<Context> weakContext;
+    private WeakReference<AddTransactionCallback> weakCallback;
+    private Wallet wallet;
+
+    public DeleteWallet( Context context, AddTransactionCallback callback,Wallet wallet){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+        this.wallet = wallet;
+    }
+
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            appDatabase.appDao().deleteWallet(wallet);
+
+            handler.post(()->{
+                weakCallback.get().postExecute("Wallet telah dihapus");
+            });
+        });
+    }
+
+    interface AddTransactionCallback{
+        void postExecute(String message);
+    }
+}
+
+class DeleteKategori{
+    private WeakReference<Context> weakContext;
+    private WeakReference<DeleteKategoriCallback> weakCallback;
+    private Category category;
+
+    public DeleteKategori( Context context, DeleteKategoriCallback callback,Category category){
+        this.weakContext = new WeakReference<>(context);
+        this.weakCallback = new WeakReference<>(callback);
+        this.category = category;
+    }
+
+    void execute(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executorService.execute(() -> {
+            Context context = weakContext.get();
+            AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
+
+            appDatabase.appDao().deleteCategory(category);
+
+            handler.post(()->{
+                weakCallback.get().postExecute("Kategori telah dihapus");
+            });
+        });
+    }
+
+    interface DeleteKategoriCallback{
+        void postExecute(String message);
     }
 }
