@@ -35,11 +35,20 @@
                 android:id="@+id/linearLayout7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9"
                 app:layout_constraintVertical_bias="0.01999998">
+
+                <TextView
+                    android:id="@+id/tvwaktu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="Jangka Waktu :"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spn_pilihrentang"
@@ -47,6 +56,22 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:entries="@array/reportOptions"
+                    android:minHeight="48dp" />
+
+                <TextView
+                    android:id="@+id/tvdompet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="Wallet :"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spn_pilihwallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:minHeight="48dp" />
 
             </LinearLayout>

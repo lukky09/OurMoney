@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -53,7 +54,8 @@ public class ReportFragment extends Fragment {
     FragmentReportBinding binding;
     ArrayList<TransactionWithRelation> trans;
     ArrayList<Category> cats;
-    int currmonth;
+    ArrayList<Wallet> wallets;
+    int currmonth,pilihanwallet,pilihantime;
 
     public static ReportFragment newInstance() {
         ReportFragment fragment = new ReportFragment();
@@ -62,12 +64,6 @@ public class ReportFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
 
 
     @Override
@@ -81,20 +77,43 @@ public class ReportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new GetTransactionAndCategories(getContext(), new GetTransactionAndCategories.GetTransactionAndCategoriesCallback() {
+        new GetAll(getContext(), new GetAll.GetTransactionAndCategoriesCallback() {
             @Override
-            public void postExecute(List<Category> c, List<TransactionWithRelation> t) {
+            public void postExecute(List<Category> c, List<TransactionWithRelation> t, List<Wallet> w) {
+                pilihantime = 0;
+                pilihanwallet = 0;
                 cats = new ArrayList<>();
                 cats.addAll(c);
                 trans = new ArrayList<>();
                 trans.addAll(t);
+                wallets = new ArrayList<>();
+                Wallet wtemp = new Wallet("Seluruh Wallet",0);
+                wtemp.setWallet_id(-1);
+                wallets.add(wtemp);
+                wallets.addAll(w);
+                ArrayAdapter<Wallet> spinnerArrayAdapter = new ArrayAdapter<Wallet>(getContext(), android.R.layout.simple_spinner_item,wallets);
+                spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                binding.spnPilihwallet.setAdapter(spinnerArrayAdapter);
                 entries = new ArrayList<>();
                 entries2 = new ArrayList<>();
-                setdata(0);
+                setdata(0,0);
                 binding.spnPilihrentang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        setdata(i);
+                        pilihantime = i;
+                        setdata(i,pilihanwallet);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+                binding.spnPilihwallet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        pilihanwallet = i;
+                        setdata(pilihantime,i);
                     }
 
                     @Override
@@ -105,10 +124,19 @@ public class ReportFragment extends Fragment {
             }
         }).execute();
         currmonth = Integer.parseInt((String) DateFormat.format("MM", new Date()));
-
     }
 
-    void setdata(int index) {
+    void setdata(int indextime,int indexwallet) {
+        ArrayList<TransactionWithRelation> filteredtrans = new ArrayList<>();
+        if (indexwallet == 0) {
+            filteredtrans.addAll(trans);
+        }else{
+            for (TransactionWithRelation tr: trans) {
+                if(tr.transaction.getWallet_id() == wallets.get(indexwallet).getWallet_id()){
+                    filteredtrans.add(tr);
+                }
+            }
+        }
         int tempmonth, total;
         total = 0;
         entries = new ArrayList<>();
@@ -119,23 +147,23 @@ public class ReportFragment extends Fragment {
         for (int i = 0; i < cats.size(); i++) {
             jumlah.add((float) 0);
         }
-        if (index == 0) {
-            for (int i = 0; i < trans.size(); i++) {
+        if (indextime == 0) {
+            for (int i = 0; i < filteredtrans.size(); i++) {
                 for (int j = 0; j < cats.size(); j++) {
-                    if (trans.get(i).category.getCategoryId() == cats.get(j).getCategoryId()) {
-                        jumlah.set(j, Math.abs(trans.get(i).transaction.getTransaction_amount()) + jumlah.get(j) + index);
+                    if (filteredtrans.get(i).category.getCategoryId() == cats.get(j).getCategoryId()) {
+                        jumlah.set(j, Math.abs(filteredtrans.get(i).transaction.getTransaction_amount()) + jumlah.get(j) + indextime);
                         break;
                     }
                 }
             }
         } else {
-            for (int i = 0; i < trans.size(); i++) {
+            for (int i = 0; i < filteredtrans.size(); i++) {
                 for (int j = 0; j < cats.size(); j++) {
-                    tempmonth = currmonth - index + 1;
+                    tempmonth = currmonth - indextime + 1;
                     if (tempmonth < 0) tempmonth += 12;
-                    tempmonth = Integer.parseInt((String) DateFormat.format("MM", trans.get(i).transaction.getTransaction_date())) - tempmonth;
-                    if (trans.get(i).category.getCategoryId() == cats.get(j).getCategoryId() && tempmonth == 0) {
-                        jumlah.set(j, Math.abs(trans.get(i).transaction.getTransaction_amount()) + jumlah.get(j));
+                    tempmonth = Integer.parseInt((String) DateFormat.format("MM", filteredtrans.get(i).transaction.getTransaction_date())) - tempmonth;
+                    if (filteredtrans.get(i).category.getCategoryId() == cats.get(j).getCategoryId() && tempmonth == 0) {
+                        jumlah.set(j, Math.abs(filteredtrans.get(i).transaction.getTransaction_amount()) + jumlah.get(j));
                         break;
                     }
                 }
@@ -196,11 +224,11 @@ public class ReportFragment extends Fragment {
     }
 }
 
-class GetTransactionAndCategories {
+class GetAll {
     private final WeakReference<Context> weakContext;
     private final WeakReference<GetTransactionAndCategoriesCallback> weakCallback;
 
-    public GetTransactionAndCategories( Context context, GetTransactionAndCategoriesCallback callback){
+    public GetAll( Context context, GetTransactionAndCategoriesCallback callback){
         this.weakContext = new WeakReference<>(context);
         this.weakCallback = new WeakReference<>(callback);
     }
@@ -215,14 +243,15 @@ class GetTransactionAndCategories {
 
             List<Category> cat = appDatabase.appDao().getallCategories();
             List<TransactionWithRelation> tra = appDatabase.appDao().getAllTransactions();
+            List<Wallet> wal = appDatabase.appDao().getallWallets();
 
             handler.post(()->{
-                weakCallback.get().postExecute(cat,tra);
+                weakCallback.get().postExecute(cat,tra,wal);
             });
         });
     }
 
     interface GetTransactionAndCategoriesCallback{
-        void postExecute(List<Category> c, List<TransactionWithRelation> t);
+        void postExecute(List<Category> c, List<TransactionWithRelation> t,List<Wallet> w);
     }
 }
