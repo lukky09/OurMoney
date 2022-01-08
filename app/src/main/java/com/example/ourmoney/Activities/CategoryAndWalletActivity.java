@@ -32,6 +32,7 @@ import com.example.ourmoney.Models.MoneyTransaction;
 import com.example.ourmoney.Models.Wallet;
 import com.example.ourmoney.R;
 import com.example.ourmoney.databinding.ActivityCategoryAndWalletBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -124,13 +125,22 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
                                         in.putExtra("wallet", (Parcelable) daftarwallet.get(i));
                                         startActivityForResult(in, 1);
                                     }else{
-                                        new DeleteWallet(getBaseContext(), new DeleteWallet.AddTransactionCallback() {
-                                            @Override
-                                            public void postExecute(String message) {
-                                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                                                getdata(false);
-                                            }
-                                        },daftarwallet.get(i)).execute();
+                                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(CategoryAndWalletActivity.this);
+                                        builder.setTitle("Yakin ingin menghapus wallet "+daftarwallet.get(i).getWalletName()+"?");
+                                        builder.setMessage("Semua transaksi yang berhubungan dengan wallet ini akan dihapus. Lanjutkan?");
+
+                                        int pos = i;
+                                        builder.setPositiveButton("Ya", (dialogInterface, i) -> {
+                                            new DeleteWallet(getBaseContext(), new DeleteWallet.AddTransactionCallback() {
+                                                @Override
+                                                public void postExecute(String message) {
+                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                    getdata(false);
+                                                }
+                                            },daftarwallet.get(pos)).execute();
+                                        });
+                                        builder.setNegativeButton("Tidak", (dialogInterface, i) -> {});
+                                        builder.show();
                                     }
                                     return true;
                                 }
@@ -166,13 +176,22 @@ public class CategoryAndWalletActivity extends AppCompatActivity {
                             in.putExtra("category", (Parcelable) listca.get(i));
                             startActivityForResult(in, 1);
                         }else{
-                            new DeleteKategori(getBaseContext(), new DeleteKategori.DeleteKategoriCallback() {
-                                @Override
-                                public void postExecute(String message) {
-                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                                    getdata(false);
-                                }
-                            }, listca.get(i)).execute();
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(CategoryAndWalletActivity.this);
+                            builder.setTitle("Yakin ingin menghapus kategori "+listca.get(i).getCategoryName()+"?");
+                            builder.setMessage("Semua transaksi yang berhubungan dengan kategori ini akan dihapus. Lanjutkan?");
+
+                            int pos = i;
+                            builder.setPositiveButton("Ya", (dialogInterface, i) -> {
+                                new DeleteKategori(getBaseContext(), new DeleteKategori.DeleteKategoriCallback() {
+                                    @Override
+                                    public void postExecute(String message) {
+                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                        getdata(false);
+                                    }
+                                }, listca.get(pos)).execute();
+                            });
+                            builder.setNegativeButton("Tidak", (dialogInterface, i) -> {});
+                            builder.show();
                         }
                         return true;
                     }
@@ -247,6 +266,7 @@ class DeleteWallet{
             Context context = weakContext.get();
             AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
 
+            appDatabase.appDao().deleteTransactionByWalletId(wallet.getWallet_id());
             appDatabase.appDao().deleteWallet(wallet);
 
             handler.post(()->{
@@ -279,6 +299,7 @@ class DeleteKategori{
             Context context = weakContext.get();
             AppDatabase appDatabase = AppDatabase.getAppDatabase(context);
 
+            appDatabase.appDao().deleteTransactionByCategoryId(category.getCategoryId());
             appDatabase.appDao().deleteCategory(category);
 
             handler.post(()->{

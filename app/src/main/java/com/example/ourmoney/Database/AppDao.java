@@ -24,6 +24,12 @@ public interface AppDao {
     @Query("DELETE FROM transactions")
     void nukeTransaction();
 
+    @Query("DELETE FROM transactions where wallet_id=:id")
+    void deleteTransactionByWalletId(int id);
+
+    @Query("DELETE FROM transactions where category_id=:id")
+    void deleteTransactionByCategoryId(int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllTransaction(List<MoneyTransaction> trans);
 

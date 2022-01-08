@@ -207,6 +207,10 @@ public class AddTransactionActivity extends AppCompatActivity {
                 binding.tbAmount.setError("Harus lebih besar dari 0");
                 return;
             }
+            else if (binding.spinnerWallet.getSelectedItemPosition() == -1 || binding.spinnerCategory.getSelectedItemPosition() == -1){
+                Toast.makeText(this, "Wallet dan Kategori harus diisi", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             String note = binding.tbNote.getText().toString();
             int categoryId = daftarcategorysorted.get(binding.spinnerCategory.getSelectedItemPosition()).getCategoryId();
