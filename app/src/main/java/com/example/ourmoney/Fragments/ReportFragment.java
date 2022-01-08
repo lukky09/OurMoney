@@ -190,11 +190,11 @@ public class ReportFragment extends Fragment {
         }
         if(total>=0){
             String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat(total+""));
-            binding.tvtotalreport.setText("Untung keseluruhan : "+displayBalance);
+            binding.tvtotalreport.setText("Pemasukan Bersih : "+displayBalance);
         }else{
             total = total * -1;
             String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat(total+""));
-            binding.tvtotalreport.setText("Rugi keseluruhan : "+displayBalance);
+            binding.tvtotalreport.setText("Pengeluaran Bersih : "+displayBalance);
         }
 
 
