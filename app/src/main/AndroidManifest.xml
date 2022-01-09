@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OurMoney">
         <activity
+            android:name=".Activities.ReportDetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activities.StoreDataActivity"
             android:exported="true" />
         <activity

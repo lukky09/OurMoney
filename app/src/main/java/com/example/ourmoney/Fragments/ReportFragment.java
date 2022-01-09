@@ -1,6 +1,7 @@
 package com.example.ourmoney.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.ourmoney.Activities.ReportDetailActivity;
 import com.example.ourmoney.Database.AppDatabase;
 import com.example.ourmoney.Models.Adapter.ReportAdapter;
 import com.example.ourmoney.Models.Adapter.TransactionAdapter;
@@ -170,9 +172,31 @@ public class ReportFragment extends Fragment {
             }
         }
         ReportAdapter adapter1 = new ReportAdapter(jumlah, cats, false);
+        adapter1.setOnItemClickCallback(new ReportAdapter.OnItemClickCallback() {
+            @Override
+            public void onItemClicked(String category, int value) {
+                Intent intent = new Intent(getContext(), ReportDetailActivity.class);
+                intent.putExtra("category", category);
+                intent.putExtra("isPengeluaran", false);
+                intent.putExtra("total", value);
+                intent.putExtra("transList", filteredtrans);
+                startActivity(intent);
+            }
+        });
         binding.rvmasuk.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvmasuk.setAdapter(adapter1);
         ReportAdapter adapter2 = new ReportAdapter(jumlah, cats, true);
+        adapter2.setOnItemClickCallback(new ReportAdapter.OnItemClickCallback() {
+            @Override
+            public void onItemClicked(String category, int value) {
+                Intent intent = new Intent(getContext(), ReportDetailActivity.class);
+                intent.putExtra("category", category);
+                intent.putExtra("isPengeluaran", true);
+                intent.putExtra("total", value);
+                intent.putExtra("transList", filteredtrans);
+                startActivity(intent);
+            }
+        });
         binding.rvkeluar.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvkeluar.setAdapter(adapter2);
         for (int i = 0; i < cats.size(); i++) {

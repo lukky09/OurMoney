@@ -5,8 +5,6 @@
     android:id="@+id/ConstraintHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15dp"
-    android:paddingHorizontal="15dp"
     tools:context=".Fragments.HomeFragment">
 
     <ScrollView
@@ -25,6 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:paddingTop="15dp"
+                android:paddingHorizontal="10dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left"
                 android:text="Selamat datang, "
@@ -168,7 +168,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cardOverview"
                 android:background="@color/OurRedLight"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="5dp">
 
                 <TextView
                     android:id="@+id/tvDate"
@@ -207,6 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/layoutRvHeader"
+                android:paddingHorizontal="10dp"
                 tools:listitem="@layout/rv_item_home" />
 
         </RelativeLayout>

@@ -25,6 +25,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.Holder> {
     ArrayList<Float> sortedjumlah;
     ArrayList<Category> sortedkategoris;
     Boolean ispengeluaran;
+    private OnItemClickCallback onItemClickCallback;
 
     public ReportAdapter(ArrayList<Float> jumlah, ArrayList<Category> kategoris,Boolean ispengeluaran) {
         sortedjumlah = new ArrayList<>();
@@ -38,6 +39,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.Holder> {
                 sortedjumlah.add(jumlah.get(i));
             }
         }
+    }
+
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
     }
 
     @NonNull
@@ -57,6 +62,15 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.Holder> {
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         if(sortedkategoris.size() > 0){
             holder.bind(sortedkategoris.get(position).getCategoryName(),sortedjumlah.get(position));
+
+            String category = sortedkategoris.get(position).getCategoryName();
+            int value = sortedjumlah.get(position).intValue();
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickCallback.onItemClicked(category, value);
+                }
+            });
         }
     }
 
@@ -80,5 +94,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.Holder> {
             String displayBalance = "Rp. " + String.format("%,.0f", Float.parseFloat(jumlah+""));
             tvjum.setText(displayBalance);
         }
+    }
+
+    public interface OnItemClickCallback{
+        void onItemClicked(String category, int value);
     }
 }
